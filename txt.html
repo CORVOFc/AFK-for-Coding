@@ -1,0 +1,513 @@
+  <!doctype html>
+  <html lang="pt-BR">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Riot Client — Layout Style (HTML + CSS)</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <style>
+      /* ===== VARIÁVEIS E CONFIGURAÇÕES GERAIS ===== */
+      :root {
+        --cor-fundo: #0a0a0c;
+        --cor-painel: #0f1113;
+        --cor-atenuação: #9aa2a8;
+        --cor-destaque: #d13a3f;
+        --cor-destaque-secundaria: #2f80ff;
+        --cor-card: #0d0f11;
+        --cor-vidro: rgba(255, 255, 255, 0.02);
+        --raio-borda: 14px;
+        --espacamento: 18px;
+        --sombra: 0 6px 18px rgba(0, 0, 0, 0.6);
+        font-family: 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial;
+      }
+      
+      * {
+        box-sizing: border-box;
+      }
+      
+      html, body {
+        height: 100%;
+        margin: 0;
+        font-size: 15px;
+        line-height: 1.3;
+      }
+      
+      body {
+        background: var(--cor-fundo);
+        color: #e6eef3;
+      }
+      
+      /* ===== TELA DE CARREGAMENTO ===== */
+      #tela-carregamento {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: var(--cor-fundo);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        z-index: 9999;
+      }
+      
+      .logo-carregamento {
+        width: 60px;
+        height: 60px;
+        border-radius: 12px;
+        background: linear-gradient(135deg, var(--cor-destaque), var(--cor-destaque-secundaria));
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: 800;
+        color: #fff;
+        font-size: 20px;
+        animation: girar 1.2s linear infinite;
+      }
+      
+      @keyframes girar {
+        from { transform: rotate(0deg); }
+        to { transform: rotate(360deg); }
+      }
+      
+      /* ===== LAYOUT PRINCIPAL E ANIMAÇÕES ===== */
+      .aplicativo {
+        display: grid;
+        grid-template-columns: 260px 1fr;
+        gap: var(--espacamento);
+        min-height: 100vh;
+        padding: 22px;
+        align-items: start;
+        opacity: 0;
+        animation: aparecer 0.8s ease forwards;
+        animation-delay: 0.5s;
+      }
+      
+      @keyframes aparecer {
+        from { opacity: 0; }
+        to { opacity: 1; }
+      }
+      
+      /* ===== BARRA LATERAL ===== */
+      .barra-lateral {
+        background: linear-gradient(180deg, var(--cor-painel), rgba(255, 255, 255, 0.02));
+        border-radius: var(--raio-borda);
+        padding: 18px;
+        box-shadow: var(--sombra);
+        height: calc(100vh - 44px);
+        position: sticky;
+        top: 22px;
+        display: flex;
+        flex-direction: column;
+        gap: 14px;
+        opacity: 0;
+        animation: deslizar-entrada 0.6s ease forwards;
+        animation-delay: 0.2s;
+      }
+      
+      @keyframes deslizar-entrada {
+        from { opacity: 0; transform: translateX(-20px); }
+        to { opacity: 1; transform: translateX(0); }
+      }
+      
+      .logo-aplicativo {
+        display: flex;
+        gap: 12px;
+        align-items: center;
+      }
+      
+      .marca-logo {
+        width: 44px;
+        height: 44px;
+        border-radius: 10px;
+        background: linear-gradient(135deg, var(--cor-destaque), #ff6b6b);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: 700;
+        box-shadow: 0 6px 18px rgba(209, 58, 63, 0.18);
+        transition: transform 0.25s ease;
+      }
+      
+      .marca-logo:hover {
+        transform: rotate(8deg) scale(1.05);
+      }
+      
+      .navegacao-principal {
+        display: flex;
+        flex-direction: column;
+        gap: 6px;
+        margin-top: 8px;
+      }
+      
+      .item-navegacao {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        padding: 10px;
+        border-radius: 10px;
+        color: var(--cor-atenuação);
+        text-decoration: none;
+        cursor: pointer;
+        transition: all 0.18s ease;
+        user-select: none;
+        font-weight: 600;
+        font-size: 14px;
+      }
+      
+      .item-navegacao:hover {
+        background: rgba(255, 255, 255, 0.02);
+        color: var(--cor-destaque);
+        transform: translateX(4px);
+      }
+      
+      .item-navegacao.ativo {
+        background: linear-gradient(90deg, rgba(209, 58, 63, 0.08), rgba(47, 128, 255, 0.02));
+        color: var(--cor-destaque);
+        box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.02);
+      }
+      
+      .espacador {
+        flex: 1;
+      }
+      
+      .perfil-usuario {
+        display: flex;
+        gap: 12px;
+        align-items: center;
+        padding-top: 8px;
+        border-top: 1px solid rgba(165, 128, 128, 0.02);
+      }
+      
+      .avatar-usuario {
+        width: 42px;
+        height: 42px;
+        border-radius: 8px;
+        background: linear-gradient(180deg, #6b0c0c, #740f0f);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: 700;
+        transition: transform 0.25s ease;
+      }
+      
+      .avatar-usuario:hover {
+        transform: scale(1.08);
+      }
+      
+      .nome-usuario {
+        font-weight: 700;
+      }
+      
+      .status-usuario {
+        font-size: 13px;
+        color: var(--cor-atenuação);
+      }
+      
+      /* ===== CONTEÚDO PRINCIPAL ===== */
+      .conteudo-principal {
+        display: flex;
+        flex-direction: column;
+        gap: 18px;
+        opacity: 0;
+        animation: deslizar-cima 0.6s ease forwards;
+        animation-delay: 0.3s;
+      }
+      
+      @keyframes deslizar-cima {
+        from { opacity: 0; transform: translateY(20px); }
+        to { opacity: 1; transform: translateY(0); }
+      }
+      
+      .barra-superior {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 12px;
+        padding: 12px 16px;
+        border-radius: 12px;
+        background: linear-gradient(180deg, rgba(255, 255, 255, 0.01), transparent);
+        box-shadow: var(--sombra);
+        transition: background 0.3s ease;
+      }
+      
+      .barra-superior:hover {
+        background: linear-gradient(180deg, rgba(255, 255, 255, 0.05), transparent);
+      }
+      
+      .campo-busca {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        background: var(--cor-card);
+        padding: 10px;
+        border-radius: 10px;
+        width: 420px;#6b0c0c
+        transition: box-shadow 0.3s ease;
+      }
+      
+      .campo-busca:hover {
+        box-shadow: 0 0 0 2px var(--cor-destaque-secundaria);
+      }
+      
+      .campo-busca input {
+        background: transparent;
+        border: 0;
+        color: inherit;
+        outline: none;
+        font-size: 14px;
+      }
+      
+      .icone-busca {
+        opacity: 0.7;
+      }
+      
+      .acoes-superiores {
+        display: flex;
+        gap: 10px;
+        align-items: center;
+      }
+      
+      .notificacoes {
+        font-weight: 700;
+      }
+      
+      .botao-atualizar {
+        padding: 8px 12px;
+        background: var(--cor-destaque);
+        border-radius: 10px;
+        font-weight: 700;
+        cursor: pointer;
+        transition: transform 0.2s ease, background 0.3s ease;
+      }
+      
+      .botao-atualizar:hover {
+        transform: translateY(-2px) scale(1.03);
+        background: #e64b50;
+      }
+      
+      /* ===== DESTAQUE PRINCIPAL ===== */
+      .destaque-principal {
+        display: flex;
+        gap: 18px;
+        align-items: center;
+        padding: 20px;
+        border-radius: 12px;
+        background: linear-gradient(90deg, rgba(47, 128, 255, 0.03), rgba(209, 58, 63, 0.02));
+        box-shadow: var(--sombra);
+        transition: transform 0.3s ease;
+      }
+      
+      .destaque-principal:hover {
+        transform: translateY(-4px);
+      }
+      
+      .texto-destaque {
+        flex: 1;
+      }
+      
+      .texto-destaque h2 {
+        margin: 0 0 8px 0;
+      }
+      
+      .texto-destaque p {
+        margin: 0;
+        color: var(--cor-atenuação);
+      }
+      
+      .imagem-destaque {
+        width: 220px;
+        height: 110px;
+        border-radius: 12px;
+        background: linear-gradient(135deg, var(--cor-destaque), var(--cor-destaque-secundaria));
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: 800;
+      }
+      
+      /* ===== CARDS DE JOGOS ===== */
+      .grade-cards {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+        gap: 16px;
+      }
+      
+      .card-jogo {
+        background: linear-gradient(180deg, rgba(255, 255, 255, 0.01), transparent);
+        border-radius: 12px;
+        padding: 12px;
+        overflow: hidden;
+        position: relative;
+        border: 1px solid rgba(255, 255, 255, 0.02);
+        transition: transform 0.18s ease, box-shadow 0.18s ease;
+        opacity: 0;
+        animation: aparecer-card 0.6s ease forwards;
+      }
+      
+      @keyframes aparecer-card {
+        from { opacity: 0; transform: translateY(12px); }
+        to { opacity: 1; transform: translateY(0); }
+      }
+      
+      .card-jogo:nth-child(1) { animation-delay: 0.4s; }
+      .card-jogo:nth-child(2) { animation-delay: 0.55s; }
+      .card-jogo:nth-child(3) { animation-delay: 0.7s; }
+      .card-jogo:nth-child(4) { animation-delay: 0.85s; }
+      .card-jogo:nth-child(5) { animation-delay: 1s; }
+      
+      .card-jogo:hover {
+        transform: translateY(-6px) scale(1.02);
+        box-shadow: 0 18px 40px rgba(0, 0, 0, 0.6);
+      }
+      
+      .midia-card {
+        height: 110px;
+        border-radius: 8px;
+        background: linear-gradient(135deg, rgba(255, 255, 255, 0.02), rgba(255, 255, 255, 0.01));
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: 700;
+        transition: background 0.3s ease;
+      }
+      
+      .card-jogo:hover .midia-card {
+        background: linear-gradient(135deg, var(--cor-destaque-secundaria), var(--cor-destaque));
+      }
+      
+      .card-jogo h3 {
+        margin: 10px 0 6px 0;
+        font-size: 15px;
+      }
+      
+      .card-jogo p {
+        margin: 0;
+        color: var(--cor-atenuação);
+        font-size: 13px;
+      }
+      
+      .etiqueta-card {
+        position: absolute;
+        right: 12px;
+        top: 12px;
+        background: rgba(0, 0, 0, 0.36);
+        padding: 6px 9px;
+        border-radius: 999px;
+        font-weight: 700;
+        font-size: 12px;
+        opacity: 0;
+        transition: opacity 0.3s ease;
+      }
+      
+      .card-jogo:hover .etiqueta-card {
+        opacity: 1;
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Tela de Carregamento -->
+    <div id="tela-carregamento">
+      <div class="logo-carregamento">RG</div>
+    </div>
+
+    <div class="aplicativo" id="aplicativo">
+      <!-- Barra Lateral -->
+      <aside class="barra-lateral">
+        <div class="logo-aplicativo">
+          <div class="marca-logo"><img src="logo.jpg" alt="" ></div>
+          <div>
+            <h1>Launcher</h1>
+            <p>Beta — cliente</p>
+          </div>
+        </div>
+
+        <!-- Navegação com links reais -->
+        <nav class="navegacao-principal">
+          <a href="index.html" class="item-navegacao ativo">Início</a>
+          <a href="jogos.html" class="item-navegacao">Jogos</a>
+          <a href="loja.html" class="item-navegacao">Loja</a>
+          <a href="amigos.html" class="item-navegacao">Amigos</a>
+          <a href="configuracoes.html" class="item-navegacao">Configurações</a>
+        </nav>
+
+        <div class="espacador"></div>
+
+        <div class="perfil-usuario">
+          <div class="avatar-usuario">C</div>
+          <div>
+            <div class="nome-usuario">Corvo</div>
+            <div class="status-usuario">Online</div>
+          </div>
+        </div>
+      </aside>
+
+      <!-- Conteúdo Principal -->
+      <main class="conteudo-principal">
+        <div class="barra-superior">
+          <div class="campo-busca">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" class="icone-busca">
+              <path d="M21 21l-4.35-4.35" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+              <circle cx="11" cy="11" r="6" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+            <input placeholder="Pesquisar jogos, amigos..." />
+          </div>
+          <div class="acoes-superiores">
+            <div class="notificacoes">Notificações</div>
+            <div class="botao-atualizar">Atualizar</div>
+          </div>
+        </div>
+
+        <section class="destaque-principal">
+          <div class="texto-destaque">
+            <h2>Bem-vindo ao seu Launcher</h2>
+            <p>Layout inspirado no novo Riot Client — dark, limpo e focado em jogos.</p>
+          </div>
+          <div class="imagem-destaque">Destaque</div>
+        </section>
+
+        <section class="grade-cards">
+          <article class="card-jogo">
+            <div class="etiqueta-card">INSTALAR</div>
+            <div class="midia-card">VALORANT</div>
+            <h3>Valorant</h3>
+            <p>FPS tático da Riot — 16.8 GB</p>
+          </article>
+
+          <article class="card-jogo">
+            <div class="midia-card">LEAGUE</div>
+            <h3>League of Legends</h3>
+            <p>MOBA clássico — 21.2 GB</p>
+          </article>
+
+          <article class="card-jogo">
+            <div class="midia-card">TFT</div>
+            <h3>Teamfight Tactics</h3>
+            <p>Auto battler — Mobile & PC</p>
+          </article>
+
+          <article class="card-jogo">
+            <div class="midia-card">PROJECT</div>
+            <h3>Project — Demo</h3>
+            <p>Espaço para novos títulos</p>  
+          </article>
+
+          <article class="card-jogo">
+            <div class="midia-card">STORE</div>
+            <h3>Loja</h3>
+            <p>Ofertas e passes</p>
+          </article>
+        </section>
+      </main>
+    </div>
+
+    <script>
+      // Remove tela de carregamento quando a página carregar
+      window.addEventListener('load', () => {
+        const telaCarregamento = document.getElementById('tela-carregamento');
+        telaCarregamento.style.opacity = '0';
+        setTimeout(() => { telaCarregamento.style.display = 'none' }, 500);
+      });
+    </script>
+  </body>
+  </html>

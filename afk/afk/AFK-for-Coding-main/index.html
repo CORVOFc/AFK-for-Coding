@@ -1,0 +1,149 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Riot Client — Layout Style (HTML + CSS)</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <!-- Tela de Carregamento -->
+  <div id="tela-carregamento">
+    <div class="logo-carregamento">RG</div>
+  </div>
+
+  <div class="aplicativo" id="aplicativo">
+    <!-- Barra Lateral -->
+    <aside class="barra-lateral">
+      <div class="logo-aplicativo">
+        <div class="marca-logo"><img src="logoVerdadeira.png" alt=""></div>
+        <div>
+          <h1>Launcher</h1>
+          <p>Beta — cliente</p>
+        </div>
+      </div>
+
+      <nav class="navegacao-principal">
+        <a href="index.html"><div class="item-navegacao ativo">Início</div></a>
+        <a href="jogos.html"><div class="item-navegacao">Jogos</div></a>
+        <a href="loja.html"><div class="item-navegacao">Loja</div></a>
+        <a href="amigos.html"><div class="item-navegacao">Amigos</div></a>
+        <a href="config.html"><div class="item-navegacao">Configurações</div></a>
+          </nav>
+
+      <div class="espacador"></div>
+
+      <div class="perfil-usuario">
+        <div class="avatar-usuario">C</div>
+        <div>
+          <div class="nome-usuario">Corvo</div>
+          <div class="status-usuario">Online</div>
+        </div>
+      </div>
+    </aside>
+
+    <!-- Conteúdo Principal -->
+    <main class="conteudo-principal">
+      <div class="barra-superior">
+        <div class="campo-busca">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" class="icone-busca">
+            <path d="M21 21l-4.35-4.35" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+            <circle cx="11" cy="11" r="6" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+          <input placeholder="Pesquisar jogos, amigos..." />
+        </div>
+        <div class="acoes-superiores">
+          <div class="notificacoes">Notificações</div>
+          <div class="botao-atualizar">Atualizar</div>
+        </div>
+      </div>
+
+      <section class="destaque-principal">
+        <div class="texto-destaque">
+          <h2>Bem-vindo ao seu Launcher</h2>
+          <p>Layout inspirado no novo Riot Client — dark, limpo e focado em jogos.</p>
+        </div>
+       
+      </section>
+
+      <section class="grade-cards">
+        <article class="card-jogo">
+          <div class="etiqueta-card">INSTALAR</div>
+          <div class="midia-card"><img src="logoVerdadeira.png" alt=""></div>
+          <h3>Valorant</h3>
+          <p>FPS tático da Riot — 16.8 GB</p>
+        </article>
+
+        <article class="card-jogo">
+          <div class="midia-card"><img src="lolzinho.jpg" alt=""></div>
+          <h3>League of Legends</h3>
+          <p>MOBA clássico — 21.2 GB</p>
+        </article>
+
+        <article class="card-jogo">
+          <div class="midia-card"><img src="Legends of Runeterra.webp" alt=""></div>
+          <h3>Legends of Runeterra</h3>
+          <p> PC</p>
+        </article>
+
+     
+
+  <script>
+    // Remove tela de carregamento quando a página carregar
+    window.addEventListener('load', () => {
+      const telaCarregamento = document.getElementById('tela-carregamento');
+      telaCarregamento.style.opacity = '0';
+      setTimeout(() => { telaCarregamento.style.display = 'none' }, 500);
+    });
+  
+  // Verificar se o usuário está logado
+  function verificarLogin() {
+    const usuarioLogado = localStorage.getItem('usuarioLogado');
+    
+    if (usuarioLogado !== 'true') {
+      // Redirecionar para a tela de login
+      window.location.href = 'login.html';
+      return false;
+    }
+    
+    // Atualizar nome do usuário se estiver disponível
+    const nomeUsuario = localStorage.getItem('nomeUsuario');
+    if (nomeUsuario) {
+      const elementoNome = document.querySelector('.nome-usuario');
+      if (elementoNome) {
+        elementoNome.textContent = nomeUsuario;
+      }
+    }
+    
+    return true;
+  }
+
+  // Verificar login quando a página carregar
+  document.addEventListener('DOMContentLoaded', function() {
+    if (!verificarLogin()) {
+      return;
+    }
+    
+    
+  });
+
+  // Adicionar função de logout (opcional)
+  function fazerLogout() {
+    localStorage.removeItem('usuarioLogado');
+    localStorage.removeItem('nomeUsuario');
+    window.location.href = 'login.html';
+  }
+
+  // Opcional: Adicionar botão de logout no perfil
+  document.addEventListener('DOMContentLoaded', function() {
+    const perfilUsuario = document.querySelector('.perfil-usuario');
+    if (perfilUsuario) {
+      perfilUsuario.style.cursor = 'pointer';
+      perfilUsuario.title = 'Clique para sair';
+      perfilUsuario.addEventListener('click', fazerLogout);
+    }
+  });
+</script>
+</body>
+</html>

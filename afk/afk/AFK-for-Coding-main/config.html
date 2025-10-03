@@ -1,0 +1,934 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Configurações - Riot Games</title>
+    <style>
+        /* 
+        =============================================
+        TEMA RIOT GAMES - VARIÁVEIS DE CORES
+        =============================================
+        Define as cores principais do tema Riot Games (preto e vermelho)
+        */
+        :root {
+            --cor-fundo: #0a0a0a;              /* Cor de fundo principal (preto escuro) */
+            --cor-primaria: #e64b50;           /* Cor primária (vermelho Riot) */
+            --cor-primaria-hover: #f05962;     /* Cor primária no hover (vermelho mais claro) */
+            --cor-secundaria: #1a1a1a;         /* Cor secundária (preto mais claro) */
+            --cor-texto: #ffffff;               /* Cor do texto principal (branco) */
+            --cor-texto-secundario: #b0b0b0;   /* Cor do texto secundário (cinza) */
+            --cor-borda: #333333;               /* Cor das bordas (cinza escuro) */
+            --cor-destaque: #ff4655;           /* Cor de destaque (vermelho mais vibrante) */
+            --cor-sucesso: #00ff88;            /* Cor de sucesso (verde) */
+        }
+
+        /* 
+        =============================================
+        RESET CSS - REMOVE ESTILOS PADRÃO DO NAVEGADOR
+        =============================================
+        */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box; /* Inclui padding e border no cálculo de width/height */
+        }
+
+        /* 
+        =============================================
+        ESTILOS GERAIS DO BODY
+        =============================================
+        */
+        body {
+            background: linear-gradient(135deg, #0a0a0a 0%, #1a1a1a 100%); /* Gradiente de fundo */
+            color: var(--cor-texto); /* Cor do texto */
+            font-family: 'Arial', sans-serif; /* Fonte principal */
+            min-height: 100vh; /* Altura mínima da tela toda */
+            overflow-x: hidden; /* Remove scroll horizontal */
+        }
+
+        /* 
+        =============================================
+        HEADER - CABEÇALHO DA PÁGINA
+        =============================================
+        */
+        .header {
+            background: linear-gradient(135deg, var(--cor-primaria) 0%, #b3393e 100%); /* Gradiente vermelho */
+            padding: 20px 0; /* Espaçamento vertical */
+            border-bottom: 3px solid var(--cor-destaque); /* Borda inferior destacada */
+            box-shadow: 0 4px 20px rgba(230, 75, 80, 0.3); /* Sombra com cor temática */
+        }
+
+        .header-content {
+            max-width: 1200px; /* Largura máxima do conteúdo */
+            margin: 0 auto; /* Centraliza horizontalmente */
+            padding: 0 20px; /* Espaçamento lateral */
+            display: flex; /* Layout flexbox para alinhar itens */
+            align-items: center; /* Alinha itens verticalmente ao centro */
+            gap: 20px; /* Espaço entre os itens */
+        }
+
+        /* 
+        =============================================
+        LOGO - ÍCONE DA RIOT GAMES
+        =============================================
+        */
+        .logo {
+            width: 50px;
+            height: 50px;
+            background: white; /* Fundo branco para contraste */
+            border-radius: 10px; /* Cantos arredondados */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 20px;
+            color: var(--cor-primaria); /* Letra vermelha */
+            border: 2px solid white; /* Borda branca */
+        }
+
+        .header h1 {
+            font-size: 28px;
+            font-weight: 700;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5); /* Sombra no texto para melhor legibilidade */
+        }
+
+        /* 
+        =============================================
+        CONTEÚDO PRINCIPAL - ÁREA CENTRAL
+        =============================================
+        */
+        .main-content {
+            max-width: 1200px; /* Largura máxima */
+            margin: 0 auto; /* Centraliza */
+            padding: 40px 20px; /* Espaçamento interno */
+        }
+
+        /* 
+        =============================================
+        BOTÃO VOLTAR - PARA RETORNAR AO LAUNCHER
+        =============================================
+        */
+        .btn-voltar {
+            background: var(--cor-primaria); /* Fundo vermelho */
+            color: white; /* Texto branco */
+            border: none; /* Remove borda padrão */
+            padding: 12px 24px; /* Espaçamento interno */
+            border-radius: 6px; /* Cantos arredondados */
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer; /* Cursor de mão ao passar */
+            transition: all 0.3s ease; /* Transição suave para hover */
+            margin-bottom: 30px; /* Espaço abaixo do botão */
+            display: inline-flex; /* Layout flex para alinhar ícone e texto */
+            align-items: center; /* Alinha ícone e texto */
+            gap: 8px; /* Espaço entre ícone e texto */
+        }
+
+        .btn-voltar:hover {
+            background: var(--cor-primaria-hover); /* Cor mais clara no hover */
+            transform: translateX(-5px); /* Move ligeiramente para esquerda */
+        }
+
+        /* 
+        =============================================
+        CONTAINER PRINCIPAL DE CONFIGURAÇÕES
+        =============================================
+        Layout com menu lateral e área de conteúdo
+        */
+        .settings-container {
+            display: grid; /* Layout em grid */
+            grid-template-columns: 250px 1fr; /* Menu lateral fixo + conteúdo flexível */
+            gap: 30px; /* Espaço entre colunas */
+            background: var(--cor-secundaria); /* Fundo escuro */
+            border-radius: 15px; /* Cantos arredondados */
+            overflow: hidden; /* Esconde conteúdo que ultrapassa */
+            border: 2px solid var(--cor-borda); /* Borda cinza */
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5); /* Sombra profunda */
+        }
+
+        /* 
+        =============================================
+        MENU LATERAL - NAVEGAÇÃO ENTRE SEÇÕES
+        =============================================
+        */
+        .settings-sidebar {
+            background: linear-gradient(180deg, #1a1a1a 0%, #2a2a2a 100%); /* Gradiente vertical */
+            padding: 30px 0; /* Espaçamento vertical */
+            border-right: 2px solid var(--cor-borda); /* Borda direita separadora */
+        }
+
+        /* 
+        =============================================
+        ITENS DO MENU LATERAL
+        =============================================
+        */
+        .sidebar-item {
+            padding: 15px 25px; /* Espaçamento interno */
+            cursor: pointer; /* Cursor de mão */
+            transition: all 0.3s ease; /* Transição suave */
+            border-left: 4px solid transparent; /* Borda lateral invisível por padrão */
+            font-weight: 600;
+        }
+
+        .sidebar-item:hover {
+            background: rgba(230, 75, 80, 0.1); /* Fundo vermelho suave no hover */
+            border-left-color: var(--cor-primaria); /* Borda lateral vermelha */
+        }
+
+        .sidebar-item.active {
+            background: rgba(230, 75, 80, 0.2); /* Fundo vermelho mais forte quando ativo */
+            border-left-color: var(--cor-destaque); /* Borda lateral destacada */
+            color: var(--cor-destaque); /* Texto em cor destacada */
+        }
+
+        /* 
+        =============================================
+        ÁREA DE CONTEÚDO DAS CONFIGURAÇÕES
+        =============================================
+        */
+        .settings-content {
+            padding: 40px; /* Espaçamento interno generoso */
+            background: var(--cor-secundaria); /* Fundo escuro */
+        }
+
+        /* 
+        =============================================
+        SEÇÕES DE CONFIGURAÇÃO (VIDEO, ÁUDIO, ETC)
+        =============================================
+        */
+        .settings-section {
+            display: none; /* Escondido por padrão */
+            animation: fadeIn 0.5s ease; /* Animação de entrada */
+        }
+
+        .settings-section.active {
+            display: block; /* Mostra quando ativo */
+        }
+
+        /* Animação de fade in com movimento suave */
+        @keyframes fadeIn {
+            from { 
+                opacity: 0; /* Invisível */
+                transform: translateY(20px); /* Ligeiramente abaixo */
+            }
+            to { 
+                opacity: 1; /* Totalmente visível */
+                transform: translateY(0); /* Posição normal */
+            }
+        }
+
+        /* 
+        =============================================
+        TÍTULO DAS SEÇÕES
+        =============================================
+        */
+        .section-title {
+            font-size: 24px;
+            font-weight: 700;
+            margin-bottom: 30px; /* Espaço abaixo do título */
+            color: var(--cor-destaque); /* Cor vermelha destacada */
+            border-bottom: 2px solid var(--cor-borda); /* Linha inferior */
+            padding-bottom: 10px; /* Espaço entre texto e linha */
+        }
+
+        /* 
+        =============================================
+        CARDS DE CONFIGURAÇÃO - CONTÊINERES INDIVIDUAIS
+        =============================================
+        */
+        .settings-card {
+            background: #2a2a2a; /* Fundo mais claro que o background */
+            border-radius: 10px; /* Cantos arredondados */
+            padding: 25px; /* Espaçamento interno */
+            margin-bottom: 20px; /* Espaço entre cards */
+            border-left: 4px solid var(--cor-primaria); /* Borda lateral colorida */
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3); /* Sombra suave */
+        }
+
+        /* 
+        =============================================
+        TÍTULO DOS CARDS
+        =============================================
+        */
+        .card-title {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 20px; /* Espaço abaixo do título */
+            color: var(--cor-texto); /* Cor do texto */
+        }
+
+        /* 
+        =============================================
+        GRUPOS DE CONTROLE (LABEL + INPUT/SELECT)
+        =============================================
+        */
+        .control-group {
+            margin-bottom: 25px; /* Espaço entre grupos de controle */
+        }
+
+        /* 
+        =============================================
+        LABEL DOS CONTROLES
+        =============================================
+        */
+        .control-label {
+            display: block; /* Ocupa linha inteira */
+            margin-bottom: 8px; /* Espaço abaixo do label */
+            font-weight: 600;
+            color: var(--cor-texto-secundario); /* Cor cinza para texto secundário */
+        }
+
+        /* 
+        =============================================
+        INPUTS E SELECTS - CAMPOS DE FORMULÁRIO
+        =============================================
+        */
+        .form-select, .form-input {
+            width: 100%; /* Largura total */
+            padding: 12px 15px; /* Espaçamento interno confortável */
+            background: #1a1a1a; /* Fundo escuro */
+            border: 2px solid var(--cor-borda); /* Borda cinza */
+            border-radius: 6px; /* Cantos levemente arredondados */
+            color: var(--cor-texto); /* Texto branco */
+            font-size: 14px;
+            transition: all 0.3s ease; /* Transição suave para focus */
+        }
+
+        /* Efeito quando o campo está em foco */
+        .form-select:focus, .form-input:focus {
+            outline: none; /* Remove outline padrão */
+            border-color: var(--cor-primaria); /* Borda vermelha */
+            box-shadow: 0 0 0 3px rgba(230, 75, 80, 0.2); /* Sombra vermelha suave */
+        }
+
+        /* 
+        =============================================
+        SWITCHES - INTERRUPTORES LIGA/DESLIGA
+        =============================================
+        */
+        .switch-group {
+            display: flex;
+            align-items: center;
+            justify-content: space-between; /* Label à esquerda, switch à direita */
+            margin-bottom: 15px; /* Espaço entre switches */
+            padding: 15px; /* Espaçamento interno */
+            background: #333; /* Fundo cinza escuro */
+            border-radius: 8px; /* Cantos arredondados */
+            transition: background 0.3s ease; /* Transição suave do fundo */
+        }
+
+        .switch-group:hover {
+            background: #3a3a3a; /* Fundo mais claro no hover */
+        }
+
+        .switch-label {
+            font-weight: 600;
+        }
+
+        /* Container do switch */
+        .switch {
+            position: relative;
+            display: inline-block;
+            width: 50px; /* Largura fixa */
+            height: 24px; /* Altura fixa */
+        }
+
+        /* Esconde o checkbox original */
+        .switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        /* O slider (parte visual do switch) */
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #555; /* Cor quando desligado */
+            transition: .4s; /* Transição suave */
+            border-radius: 24px; /* Forma arredondada */
+        }
+
+        /* O círculo dentro do slider */
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 16px;
+            width: 16px;
+            left: 4px;
+            bottom: 4px;
+            background-color: white; /* Cor do círculo */
+            transition: .4s; /* Transição suave */
+            border-radius: 50%; /* Forma circular */
+        }
+
+        /* Quando o checkbox está marcado */
+        input:checked + .slider {
+            background-color: var(--cor-primaria); /* Vermelho quando ligado */
+        }
+
+        /* Move o círculo quando ligado */
+        input:checked + .slider:before {
+            transform: translateX(26px); /* Move para direita */
+        }
+
+        /* 
+        =============================================
+        SLIDERS DE VOLUME/RANGE
+        =============================================
+        */
+        .slider-group {
+            margin-bottom: 20px; /* Espaço entre sliders */
+        }
+
+        .slider-container {
+            display: flex;
+            align-items: center;
+            gap: 15px; /* Espaço entre slider e valor */
+        }
+
+        .slider-value {
+            min-width: 40px; /* Largura mínima fixa */
+            text-align: center; /* Texto centralizado */
+            font-weight: 600;
+            color: var(--cor-destaque); /* Cor vermelha para o valor */
+        }
+
+        /* O input range personalizado */
+        .range-slider {
+            flex: 1; /* Ocupa espaço disponível */
+            height: 6px; /* Altura fina */
+            background: #555; /* Cor de fundo */
+            border-radius: 3px; /* Cantos arredondados */
+            outline: none; /* Remove outline */
+            -webkit-appearance: none; /* Remove estilo padrão no Webkit */
+        }
+
+        /* O "thumb" (botão deslizante) personalizado */
+        .range-slider::-webkit-slider-thumb {
+            -webkit-appearance: none; /* Remove estilo padrão */
+            width: 20px; /* Largura do thumb */
+            height: 20px; /* Altura do thumb */
+            background: var(--cor-primaria); /* Cor vermelha */
+            border-radius: 50%; /* Forma circular */
+            cursor: pointer; /* Cursor de mão */
+            border: 2px solid white; /* Borda branca para contraste */
+        }
+
+        /* 
+        =============================================
+        BOTÕES DE AÇÃO (APLICAR, RESTAURAR, SALVAR)
+        =============================================
+        */
+        .action-buttons {
+            display: flex;
+            gap: 15px; /* Espaço entre botões */
+            margin-top: 40px; /* Espaço acima dos botões */
+            padding-top: 30px; /* Espaço interno superior */
+            border-top: 2px solid var(--cor-borda); /* Linha separadora */
+        }
+
+        /* Estilo base para todos os botões */
+        .btn {
+            padding: 15px 30px; /* Espaçamento interno generoso */
+            border: none; /* Remove borda padrão */
+            border-radius: 8px; /* Cantos arredondados */
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer; /* Cursor de mão */
+            transition: all 0.3s ease; /* Transição suave */
+        }
+
+        /* Botão primário (Aplicar Configurações) */
+        .btn-primary {
+            background: var(--cor-primaria); /* Fundo vermelho */
+            color: white; /* Texto branco */
+        }
+
+        .btn-primary:hover {
+            background: var(--cor-primaria-hover); /* Vermelho mais claro */
+            transform: translateY(-2px); /* Levanta ligeiramente */
+            box-shadow: 0 5px 15px rgba(230, 75, 80, 0.4); /* Sombra vermelha */
+        }
+
+        /* Botão secundário (Restaurar Padrões) */
+        .btn-secondary {
+            background: #333; /* Fundo cinza escuro */
+            color: white; /* Texto branco */
+            border: 2px solid #555; /* Borda cinza */
+        }
+
+        .btn-secondary:hover {
+            background: #444; /* Fundo mais claro no hover */
+        }
+
+        /* Botão de sucesso (Salvar e Sair) */
+        .btn-success {
+            background: var(--cor-sucesso); /* Fundo verde */
+            color: #000; /* Texto preto para contraste */
+            font-weight: 700;
+        }
+
+        .btn-success:hover {
+            opacity: 0.9; /* Leve transparência */
+            transform: translateY(-2px); /* Levanta ligeiramente */
+        }
+
+        /* 
+        =============================================
+        GRID PARA ORGANIZAR CONFIGURAÇÕES EM COLUNAS
+        =============================================
+        */
+        .settings-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); /* Colunas responsivas */
+            gap: 20px; /* Espaço entre itens do grid */
+            margin-bottom: 30px; /* Espaço abaixo do grid */
+        }
+
+        /* 
+        =============================================
+        LISTA DE JOGOS INSTALADOS
+        =============================================
+        */
+        .games-list {
+            display: flex;
+            flex-direction: column; /* Itens em coluna */
+            gap: 10px; /* Espaço entre itens */
+        }
+
+        /* 
+        =============================================
+        ITENS INDIVIDUAIS DA LISTA DE JOGOS
+        =============================================
+        */
+        .game-item {
+            display: flex;
+            align-items: center;
+            gap: 15px; /* Espaço entre ícone e texto */
+            padding: 15px; /* Espaçamento interno */
+            background: #333; /* Fundo cinza escuro */
+            border-radius: 8px; /* Cantos arredondados */
+            cursor: pointer; /* Cursor de mão */
+            transition: all 0.3s ease; /* Transição suave */
+            border-left: 4px solid transparent; /* Borda lateral invisível por padrão */
+        }
+
+        .game-item:hover {
+            background: #3a3a3a; /* Fundo mais claro no hover */
+            border-left-color: var(--cor-primaria); /* Borda lateral vermelha */
+        }
+
+        .game-item.active {
+            background: rgba(230, 75, 80, 0.2); /* Fundo vermelho suave quando ativo */
+            border-left-color: var(--cor-destaque); /* Borda lateral destacada */
+        }
+
+        /* 
+        =============================================
+        ÍCONE DOS JOGOS NA LISTA
+        =============================================
+        */
+        .game-icon {
+            width: 40px;
+            height: 40px;
+            background: var(--cor-primaria); /* Fundo vermelho */
+            border-radius: 8px; /* Cantos arredondados */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            color: white; /* Texto branco */
+        }
+
+        /* 
+        =============================================
+        DESIGN RESPONSIVO - MOBILE E TABLETS
+        =============================================
+        */
+        @media (max-width: 768px) {
+            /* Em telas menores, muda para layout de coluna única */
+            .settings-container {
+                grid-template-columns: 1fr; /* Uma coluna apenas */
+            }
+
+            .settings-sidebar {
+                border-right: none; /* Remove borda direita */
+                border-bottom: 2px solid var(--cor-borda); /* Adiciona borda inferior */
+            }
+
+            /* Ajusta itens do menu para mobile */
+            .sidebar-item {
+                text-align: center; /* Texto centralizado */
+                border-left: none; /* Remove borda lateral */
+                border-bottom: 4px solid transparent; /* Borda inferior invisível */
+            }
+
+            .sidebar-item.active,
+            .sidebar-item:hover {
+                border-left: none; /* Remove borda lateral */
+                border-bottom-color: var(--cor-primaria); /* Borda inferior colorida */
+            }
+
+            .settings-content {
+                padding: 20px; /* Menos padding em mobile */
+            }
+
+            .action-buttons {
+                flex-direction: column; /* Botões em coluna */
+            }
+
+            .settings-grid {
+                grid-template-columns: 1fr; /* Grid de uma coluna */
+            }
+        }
+
+        /* 
+        =============================================
+        ANIMAÇÃO PULSE - PARA FEEDBACK VISUAL
+        =============================================
+        */
+        .pulse {
+            animation: pulse 2s infinite; /* Animação contínua */
+        }
+
+        @keyframes pulse {
+            0% { 
+                box-shadow: 0 0 0 0 rgba(230, 75, 80, 0.7); /* Sombra inicial */
+            }
+            70% { 
+                box-shadow: 0 0 0 10px rgba(230, 75, 80, 0); /* Sombra expande e some */
+            }
+            100% { 
+                box-shadow: 0 0 0 0 rgba(230, 75, 80, 0); /* Sombra some completamente */
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- 
+    =============================================
+    HEADER - CABEÇALHO DA PÁGINA
+    Exibe o logo e título das configurações
+    =============================================
+    -->
+    <header class="header">
+        <div class="header-content">
+            <div class="logo">R</div>
+            <h1>Configurações - Riot Games</h1>
+        </div>
+    </header>
+
+    <!-- 
+    =============================================
+    CONTEÚDO PRINCIPAL - ONDE TODAS AS CONFIGURAÇÕES FICAM
+    =============================================
+    -->
+    <main class="main-content">
+        <!-- 
+        BOTÃO VOLTAR - PARA RETORNAR AO LAUNCHER PRINCIPAL
+        -->
+        <button class="btn-voltar" onclick="voltarParaLauncher()">
+            ← Voltar para Launcher
+        </button>
+
+        <!-- 
+        CONTAINER PRINCIPAL - DIVIDE EM MENU LATERAL E CONTEÚDO
+        -->
+        <div class="settings-container">
+            <!-- 
+            =============================================
+            MENU LATERAL - NAVEGAÇÃO ENTRE SEÇÕES
+            Cada item tem um data-section que corresponde ao ID da seção
+            =============================================
+            -->
+            <nav class="settings-sidebar">
+                <div class="sidebar-item active" data-section="video">🎮 Vídeo</div>
+                <div class="sidebar-item" data-section="audio">🔊 Áudio</div>
+                <div class="sidebar-item" data-section="controles">🎯 Controles</div>
+                <div class="sidebar-item" data-section="interface">🖥️ Interface</div>
+                <div class="sidebar-item" data-section="jogos">🎲 Jogos</div>
+                <div class="sidebar-item" data-section="conta">👤 Conta</div>
+                <div class="sidebar-item" data-section="suporte">🛠️ Suporte</div>
+            </nav>
+
+            <!-- 
+            =============================================
+            CONTEÚDO DAS CONFIGURAÇÕES - ÁREA DINÂMICA
+            Cada seção é mostrada/ocultada conforme o menu lateral
+            =============================================
+            -->
+            <div class="settings-content">
+                <!-- 
+                SEÇÃO VÍDEO - CONFIGURAÇÕES GRÁFICAS E VISUAIS
+                -->
+                <div class="settings-section active" id="video">
+                    <h2 class="section-title">Configurações de Vídeo</h2>
+                    
+                    <div class="settings-grid">
+                        <div class="settings-card">
+                            <h3 class="card-title">Resolução</h3>
+                            <div class="control-group">
+                                <label class="control-label">Resolução da Tela</label>
+                                <select class="form-select">
+                                    <option>1920x1080 (Recomendado)</option>
+                                    <option>2560x1440</option>
+                                    <option>1366x768</option>
+                                    <option>1280x720</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="settings-card">
+                            <h3 class="card-title">Qualidade Gráfica</h3>
+                            <div class="control-group">
+                                <label class="control-label">Qualidade</label>
+                                <select class="form-select">
+                                    <option>Alta (Recomendado)</option>
+                                    <option>Média</option>
+                                    <option>Baixa</option>
+                                    <option>Personalizado</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="settings-card">
+                        <h3 class="card-title">Opções Avançadas</h3>
+                        <div class="switch-group">
+                            <span class="switch-label">Modo Tela Cheia</span>
+                            <label class="switch">
+                                <input type="checkbox" checked>
+                                <span class="slider"></span>
+                            </label>
+                        </div>
+                        <div class="switch-group">
+                            <span class="switch-label">VSync</span>
+                            <label class="switch">
+                                <input type="checkbox">
+                                <span class="slider"></span>
+                            </label>
+                        </div>
+                        <div class="switch-group">
+                            <span class="switch-label">Anti-aliasing</span>
+                            <label class="switch">
+                                <input type="checkbox" checked>
+                                <span class="slider"></span>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 
+                SEÇÃO ÁUDIO - CONFIGURAÇÕES DE SOM E VOLUME
+                -->
+                <div class="settings-section" id="audio">
+                    <h2 class="section-title">Configurações de Áudio</h2>
+                    
+                    <div class="settings-card">
+                        <h3 class="card-title">Volumes</h3>
+                        <div class="slider-group">
+                            <label class="control-label">Volume Geral</label>
+                            <div class="slider-container">
+                                <input type="range" class="range-slider" value="80" min="0" max="100">
+                                <span class="slider-value">80%</span>
+                            </div>
+                        </div>
+                        <div class="slider-group">
+                            <label class="control-label">Volume dos Efeitos</label>
+                            <div class="slider-container">
+                                <input type="range" class="range-slider" value="90" min="0" max="100">
+                                <span class="slider-value">90%</span>
+                            </div>
+                        </div>
+                        <div class="slider-group">
+                            <label class="control-label">Volume da Música</label>
+                            <div class="slider-container">
+                                <input type="range" class="range-slider" value="60" min="0" max="100">
+                                <span class="slider-value">60%</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 
+                SEÇÃO JOGOS - GERENCIAMENTO DE JOGOS INSTALADOS
+                -->
+                <div class="settings-section" id="jogos">
+                    <h2 class="section-title">Gerenciar Jogos</h2>
+                    
+                    <div class="settings-card">
+                        <h3 class="card-title">Jogos Instalados</h3>
+                        <div class="games-list">
+                            <div class="game-item active">
+                                <div class="game-icon">V</div>
+                                <div>
+                                    <div style="font-weight: 600;">VALORANT</div>
+                                    <div style="font-size: 12px; color: var(--cor-texto-secundario);">Atualizado</div>
+                                </div>
+                            </div>
+                            <div class="game-item">
+                                <div class="game-icon">L</div>
+                                <div>
+                                    <div style="font-weight: 600;">League of Legends</div>
+                                    <div style="font-size: 12px; color: var(--cor-texto-secundario);">Atualização Disponível</div>
+                                </div>
+                            </div>
+                            <div class="game-item">
+                                <div class="game-icon">R</div>
+                                <div>
+                                    <div style="font-weight: 600;">Legends of Runeterra</div>
+                                    <div style="font-size: 12px; color: var(--cor-texto-secundario);">Atualizado</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 
+                SEÇÃO CONTA - CONFIGURAÇÕES DE PERFIL E PRIVACIDADE
+                -->
+                <div class="settings-section" id="conta">
+                    <h2 class="section-title">Configurações da Conta</h2>
+                    
+                    <div class="settings-grid">
+                        <div class="settings-card">
+                            <h3 class="card-title">Informações da Conta</h3>
+                            <div class="control-group">
+                                <label class="control-label">Nome de Usuário</label>
+                                <input type="text" class="form-input" value="Player123" readonly>
+                            </div>
+                            <div class="control-group">
+                                <label class="control-label">Email</label>
+                                <input type="email" class="form-input" value="player@example.com" readonly>
+                            </div>
+                        </div>
+
+                        <div class="settings-card">
+                            <h3 class="card-title">Privacidade</h3>
+                            <div class="switch-group">
+                                <span class="switch-label">Status Online</span>
+                                <label class="switch">
+                                    <input type="checkbox" checked>
+                                    <span class="slider"></span>
+                                </label>
+                            </div>
+                            <div class="switch-group">
+                                <span class="switch-label">Permitir Convites</span>
+                                <label class="switch">
+                                    <input type="checkbox" checked>
+                                    <span class="slider"></span>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 
+                =============================================
+                BOTÕES DE AÇÃO - PARA APLICAR/SAIR DAS CONFIGURAÇÕES
+                =============================================
+                -->
+                <div class="action-buttons">
+                    <button class="btn btn-primary" onclick="aplicarConfiguracoes()">Aplicar Configurações</button>
+                    <button class="btn btn-secondary" onclick="resetarConfiguracoes()">Restaurar Padrões</button>
+                    <button class="btn btn-success" onclick="salvarConfiguracoes()">Salvar e Sair</button>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        // =============================================
+        // NAVEGAÇÃO ENTRE SEÇÕES DO MENU LATERAL
+        // =============================================
+        document.querySelectorAll('.sidebar-item').forEach(item => {
+            item.addEventListener('click', function() {
+                // Remove a classe 'active' de todos os itens do menu
+                document.querySelectorAll('.sidebar-item').forEach(i => i.classList.remove('active'));
+                // Remove a classe 'active' de todas as seções
+                document.querySelectorAll('.settings-section').forEach(s => s.classList.remove('active'));
+                
+                // Adiciona a classe 'active' no item do menu que foi clicado
+                this.classList.add('active');
+                // Obtém o ID da seção a partir do atributo data-section
+                const sectionId = this.getAttribute('data-section');
+                // Mostra a seção correspondente
+                document.getElementById(sectionId).classList.add('active');
+            });
+        });
+
+        // =============================================
+        // ATUALIZAR VALORES DOS SLIDERS DE VOLUME
+        // =============================================
+        document.querySelectorAll('.range-slider').forEach(slider => {
+            slider.addEventListener('input', function() {
+                // Encontra o elemento que mostra o valor (o próximo irmão)
+                const valueDisplay = this.nextElementSibling;
+                // Atualiza o texto com o valor atual + '%'
+                valueDisplay.textContent = this.value + '%';
+            });
+        });
+
+        // =============================================
+        // FUNÇÕES DE AÇÃO DOS BOTÕES
+        // =============================================
+
+        /**
+         * Volta para a tela do launcher principal
+         */
+        function voltarParaLauncher() {
+            window.location.href = 'launcher.html';
+        }
+
+        /**
+         * Aplica as configurações alteradas
+         * (Em uma aplicação real, aqui salvaria no servidor/localStorage)
+         */
+        function aplicarConfiguracoes() {
+            alert('Configurações aplicadas com sucesso!');
+        }
+
+        /**
+         * Restaura todas as configurações para os valores padrão
+         */
+        function resetarConfiguracoes() {
+            if (confirm('Tem certeza que deseja restaurar todas as configurações para os valores padrão?')) {
+                alert('Configurações restauradas para os valores padrão.');
+            }
+        }
+
+        /**
+         * Salva as configurações e volta para o launcher
+         */
+        function salvarConfiguracoes() {
+            aplicarConfiguracoes();
+            // Espera 1 segundo antes de voltar para dar feedback visual
+            setTimeout(() => {
+                voltarParaLauncher();
+            }, 1000);
+        }
+
+        // =============================================
+        // EFEITOS VISUAIS NOS SWITCHES
+        // =============================================
+        document.querySelectorAll('.switch input').forEach(switchInput => {
+            switchInput.addEventListener('change', function() {
+                // Quando um switch é alterado, adiciona efeito visual
+                if (this.checked) {
+                    this.parentElement.classList.add('pulse'); // Adiciona animação
+                    // Remove a animação após 2 segundos
+                    setTimeout(() => {
+                        this.parentElement.classList.remove('pulse');
+                    }, 2000);
+                }
+            });
+        });
+    </script>
+</body>
+</html>

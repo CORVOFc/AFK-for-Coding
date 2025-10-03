@@ -1,0 +1,943 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Launcher de Jogos</title>
+    <style>
+        /* --- Definições de Cores e Fontes --- */
+        :root {
+            --cor-background: #121212; /* Fundo escuro */
+            --cor-card: #1c1c1c; /* Fundo dos cards */
+            --cor-card-hover: #2a2a2a; /* Cor de hover do card */
+            --cor-text: #f0f0f0; /* Cor de texto principal */
+            --cor-secundaria: #7289da; /* Cor para destaque (roxo claro) */
+            --cor-botao: #e64b50; /* Cor do botão (vermelho) */
+            --cor-botao-hover: #f05962; /* Cor do botão ao passar o mouse */
+            --cor-botao-ativo: #f26a6a; /* Cor de hover para o botão */
+            --cor-sombra: rgba(0, 0, 0, 0.6); /* Sombra */
+            --cor-botao-voltar: #e64b50; /* Cor do botão voltar */
+            --cor-botao-voltar-hover: #f05962; /* Cor do botão voltar hover */
+            --cor-destaque: #e64b50; /* Vermelho para destaque */
+            --cor-destaque-hover: #f05962; /* Vermelho hover */
+        }
+
+        /* --- Reset de Estilos --- */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        /* --- Estilos Globais --- */
+        body {
+            background-color: var(--cor-background);
+            color: var(--cor-text);
+            font-family: "Arial", sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        .conteudo-principal {
+            width: 100%;
+            padding: 30px;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+        }
+
+        /* --- Botão Voltar --- */
+        .botao-voltar {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            background-color: var(--cor-botao-voltar);
+            color: white;
+            padding: 12px 20px;
+            border-radius: 6px;
+            border: none;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background-color 0.2s ease, transform 0.2s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            z-index: 1000;
+        }
+
+        .botao-voltar:hover {
+            background-color: var(--cor-botao-voltar-hover);
+            transform: translateX(-3px);
+        }
+
+        .botao-voltar:active {
+            transform: translateX(0);
+        }
+
+        .seta-voltar {
+            font-size: 16px;
+        }
+
+        /* --- Contêiner de Jogos --- */
+        .jogos-container {
+            display: grid;
+            grid-template-columns: repeat(3, 280px); /* 3 colunas fixas */
+            gap: 25px;
+            justify-content: center;
+            align-items: center;
+            width: fit-content;
+            margin: 0 auto;
+        }
+
+        /* --- Card de Jogo --- */
+        .jogo-card {
+            background: var(--cor-card);
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 4px 16px var(--cor-sombra);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 30px 20px;
+            height: 350px;
+            justify-content: space-between;
+            width: 100%;
+        }
+
+        .jogo-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 8px 30px var(--cor-sombra);
+        }
+
+        .jogo-img {
+            width: 100%;
+            height: 160px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: rgba(255, 255, 255, 0.05);
+            border-radius: 8px;
+            margin-bottom: 20px;
+            overflow: hidden;
+        }
+
+        .jogo-img img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 8px;
+        }
+
+        .jogo-info {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 100%;
+        }
+
+        .jogo-info h3 {
+            font-size: 18px;
+            font-weight: 600;
+            text-align: center;
+            color: var(--cor-text);
+            margin-bottom: 8px;
+        }
+
+        .jogo-info p {
+            font-size: 14px;
+            color: #b0b0b0;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        /* --- Botão de Jogo --- */
+        .botao-jogo {
+            background-color: var(--cor-botao);
+            color: white;
+            padding: 12px 30px;
+            border-radius: 6px;
+            border: none;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background-color 0.2s ease, transform 0.2s ease;
+            width: 100%;
+            max-width: 150px;
+        }
+
+        .botao-jogo:hover {
+            background-color: var(--cor-botao-hover);
+            transform: scale(1.05);
+        }
+
+        .botao-jogo:active {
+            background-color: var(--cor-botao-ativo);
+        }
+
+        /* --- Modal Personalizado --- */
+        .modal-jogo {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.9);
+            z-index: 2000;
+            justify-content: center;
+            align-items: center;
+            overflow-y: auto;
+            padding: 20px;
+        }
+
+        .modal-conteudo {
+            background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
+            border-radius: 16px;
+            max-width: 800px;
+            width: 100%;
+            max-height: 90vh;
+            overflow-y: auto;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.8);
+            animation: aparecer-modal 0.4s ease-out;
+            border: 2px solid var(--cor-destaque);
+        }
+
+        @keyframes aparecer-modal {
+            from {
+                opacity: 0;
+                transform: scale(0.9) translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1) translateY(0);
+            }
+        }
+
+        /* Header do Modal */
+        .modal-header {
+            background: linear-gradient(135deg, #e64b50 0%, #b3393e 100%);
+            padding: 30px;
+            border-radius: 14px 14px 0 0;
+            position: relative;
+        }
+
+        .modal-header-content {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .modal-logo {
+            width: 80px;
+            height: 80px;
+            background: white;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 24px;
+            color: #e64b50;
+            border: 2px solid white;
+        }
+
+        .modal-title-section h1 {
+            font-size: 32px;
+            font-weight: 700;
+            margin-bottom: 5px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+        }
+
+        .modal-title-section .developer {
+            font-size: 16px;
+            color: rgba(255, 255, 255, 0.9);
+            margin-bottom: 10px;
+            font-weight: 600;
+        }
+
+        .modal-rating {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 14px;
+        }
+
+        .stars {
+            color: #ffd700;
+            font-size: 18px;
+        }
+
+        /* Corpo do Modal */
+        .modal-body {
+            padding: 30px;
+        }
+
+        .price-section {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            margin-bottom: 25px;
+            padding-bottom: 20px;
+            border-bottom: 2px solid #333;
+        }
+
+        .price {
+            font-size: 28px;
+            font-weight: 700;
+            color: #00ff88;
+        }
+
+        .badge {
+            background: var(--cor-destaque);
+            color: white;
+            padding: 6px 12px;
+            border-radius: 6px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+
+        .btn-primary {
+            background: var(--cor-destaque);
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background-color 0.2s ease;
+            flex: 1;
+        }
+
+        .btn-primary:hover {
+            background: var(--cor-destaque-hover);
+            transform: translateY(-2px);
+        }
+
+        .btn-secondary {
+            background: #333;
+            color: white;
+            border: 2px solid #555;
+            padding: 15px 20px;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background-color 0.2s ease;
+        }
+
+        .btn-secondary:hover {
+            background: #444;
+        }
+
+        /* Informações do Jogo */
+        .game-info-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .info-item {
+            background: #2a2a2a;
+            padding: 15px;
+            border-radius: 8px;
+            border-left: 4px solid var(--cor-destaque);
+        }
+
+        .info-label {
+            font-size: 12px;
+            color: #888;
+            margin-bottom: 5px;
+        }
+
+        .info-value {
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        /* Classificação Etária */
+        .rating-info {
+            background: #2a2a2a;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            border-left: 4px solid var(--cor-destaque);
+        }
+
+        .rating-badge {
+            background: var(--cor-destaque);
+            color: white;
+            padding: 8px 12px;
+            border-radius: 6px;
+            font-weight: 700;
+            font-size: 18px;
+            display: inline-block;
+            margin-bottom: 10px;
+        }
+
+        .rating-description {
+            font-size: 14px;
+            color: #ccc;
+            line-height: 1.4;
+        }
+
+        /* Detalhes Adicionais */
+        .additional-details {
+            background: #2a2a2a;
+            padding: 20px;
+            border-radius: 8px;
+            border-left: 4px solid var(--cor-destaque);
+        }
+
+        .details-title {
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 15px;
+            color: #fff;
+        }
+
+        .details-list {
+            list-style: none;
+        }
+
+        .details-list li {
+            padding: 8px 0;
+            border-bottom: 1px solid #333;
+            font-size: 14px;
+            color: #ccc;
+            position: relative;
+            padding-left: 15px;
+        }
+
+        .details-list li:before {
+            content: "•";
+            color: var(--cor-destaque);
+            position: absolute;
+            left: 0;
+            font-weight: bold;
+        }
+
+        .details-list li:last-child {
+            border-bottom: none;
+        }
+
+        /* Progresso de Download */
+        .download-progress {
+            display: none;
+            background: #2a2a2a;
+            padding: 20px;
+            border-radius: 8px;
+            margin-top: 20px;
+            text-align: center;
+            border-left: 4px solid var(--cor-destaque);
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 8px;
+            background: #333;
+            border-radius: 4px;
+            overflow: hidden;
+            margin: 15px 0;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: var(--cor-destaque);
+            width: 0%;
+            transition: width 0.3s ease;
+        }
+
+        .progress-text {
+            font-size: 14px;
+            color: #ccc;
+        }
+
+        /* --- Animações de entrada para os cards --- */
+        .jogo-card {
+            opacity: 0;
+            transform: translateY(20px);
+            animation: aparecer-card 0.6s forwards;
+        }
+
+        @keyframes aparecer-card {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* --- Responsividade --- */
+        @media (max-width: 1024px) {
+            .jogos-container {
+                grid-template-columns: repeat(3, 250px);
+                gap: 20px;
+            }
+            
+            .modal-conteudo {
+                max-width: 700px;
+            }
+        }
+
+        @media (max-width: 900px) {
+            .jogos-container {
+                grid-template-columns: repeat(2, 280px);
+                gap: 20px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .jogos-container {
+                grid-template-columns: repeat(2, 240px);
+                gap: 15px;
+            }
+            
+            .modal-header-content {
+                flex-direction: column;
+                text-align: center;
+            }
+            
+            .action-buttons {
+                flex-direction: column;
+            }
+            
+            .game-info-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 600px) {
+            .jogos-container {
+                grid-template-columns: 280px;
+                gap: 15px;
+            }
+            
+            .modal-conteudo {
+                margin: 10px;
+            }
+            
+            .modal-header {
+                padding: 20px;
+            }
+            
+            .modal-body {
+                padding: 20px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .jogos-container {
+                grid-template-columns: 1fr;
+                max-width: 300px;
+            }
+            
+            .modal-title-section h1 {
+                font-size: 24px;
+            }
+            
+            .price {
+                font-size: 24px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Botão Voltar -->
+    <button class="botao-voltar" onclick="voltarParaHome()">
+        <span class="seta-voltar">←</span>
+        Voltar
+    </button>
+
+    <main class="conteudo-principal">
+        <section class="jogos-container">
+            <!-- Card do Jogo: VALORANT -->
+            <div class="jogo-card">
+                <div class="jogo-img">
+                    <img src="logo.jpg" alt="Ícone do VALORANT">
+                </div>
+                <div class="jogo-info">
+                    <h3>VALORANT</h3>
+                    <p>FPS Tático</p>
+                    <button class="botao-jogo" onclick="abrirModalJogo('VALORANT')">Jogar</button>
+                </div>
+            </div>
+
+            <!-- Card do Jogo: League of Legends -->
+            <div class="jogo-card">
+                <div class="jogo-img">
+                    <img src="lolzinho.jpg" alt="Ícone do League of Legends">
+                </div>
+                <div class="jogo-info">
+                    <h3>League of Legends</h3>
+                    <p>MOBA Clássico</p>
+                    <button class="botao-jogo" onclick="abrirModalJogo('League of Legends')">Jogar</button>
+                </div>
+            </div>
+
+            <!-- Card do Jogo: Legends of Runeterra -->
+            <div class="jogo-card">
+                <div class="jogo-img">
+                    <img src="Legends of Runeterra.webp" alt="Legends of Runeterra">
+                </div>
+                <div class="jogo-info">
+                    <h3>Legends of Runeterra</h3>
+                    <p>Card Game</p>
+                    <button class="botao-jogo" onclick="abrirModalJogo('Legends of Runeterra')">Jogar</button>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Modal VALORANT -->
+    <div id="modalValorant" class="modal-jogo">
+        <div class="modal-conteudo">
+            <div class="modal-header">
+                <div class="modal-header-content">
+                    <div class="modal-logo">V</div>
+                    <div class="modal-title-section">
+                        <h1>VALORANT</h1>
+                        <div class="developer">RIOT GAMES</div>
+                        <div class="modal-rating">
+                            <div class="stars">★★★★☆</div>
+                            <span>3.97 • 13 mil classificações</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="modal-body">
+                <div class="price-section">
+                    <div class="price">Gratuito</div>
+                    <div class="badge">FPS Competitivo</div>
+                </div>
+
+                <div class="action-buttons">
+                    <button class="btn-primary" onclick="iniciarDownload('VALORANT')">Instalar Jogo</button>
+                    <button class="btn-secondary" onclick="fecharModal()">Cancelar</button>
+                </div>
+
+                <div class="game-info-grid">
+                    <div class="info-item">
+                        <div class="info-label">Classificação</div>
+                        <div class="info-value">Violência - 14</div>
+                    </div>
+                    <div class="info-item">
+                        <div class="info-label">Recursos</div>
+                        <div class="info-value">Compras no jogo</div>
+                    </div>
+                    <div class="info-item">
+                        <div class="info-label">Jogadores Online</div>
+                        <div class="info-value">10 jogadores</div>
+                    </div>
+                    <div class="info-item">
+                        <div class="info-label">Modo</div>
+                        <div class="info-value">Multijogador Online</div>
+                    </div>
+                </div>
+
+                <div class="rating-info">
+                    <div class="rating-badge">14</div>
+                    <div class="rating-description">
+                        Violência, Compras no jogo, Usuários interagem<br>
+                        Compras no jogo opcionais
+                    </div>
+                </div>
+
+                <div class="additional-details">
+                    <div class="details-title">Sobre o Jogo</div>
+                    <ul class="details-list">
+                        <li>FPS tático 5v5 com personagens únicos</li>
+                        <li>Habilidades especiais e mira precisa</li>
+                        <li>Jogo online necessário</li>
+                        <li>Atualizações gratuitas regulares</li>
+                        <li>Comunidade competitiva ativa</li>
+                    </ul>
+                </div>
+
+                <div id="downloadValorant" class="download-progress">
+                    <div class="progress-text">Instalando VALORANT...</div>
+                    <div class="progress-bar">
+                        <div class="progress-fill"></div>
+                    </div>
+                    <div class="progress-text">0%</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal League of Legends -->
+    <div id="modalLol" class="modal-jogo">
+        <div class="modal-conteudo">
+            <div class="modal-header">
+                <div class="modal-header-content">
+                    <div class="modal-logo">L</div>
+                    <div class="modal-title-section">
+                        <h1>League of Legends</h1>
+                        <div class="developer">RIOT GAMES</div>
+                        <div class="modal-rating">
+                            <div class="stars">★★★★★</div>
+                            <span>4.2 • 25 mil classificações</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="modal-body">
+                <div class="price-section">
+                    <div class="price">Gratuito</div>
+                    <div class="badge">MOBA Épico</div>
+                </div>
+
+                <div class="action-buttons">
+                    <button class="btn-primary" onclick="iniciarDownload('League of Legends')">Instalar Jogo</button>
+                    <button class="btn-secondary" onclick="fecharModal()">Cancelar</button>
+                </div>
+
+                <div class="game-info-grid">
+                    <div class="info-item">
+                        <div class="info-label">Classificação</div>
+                        <div class="info-value">Violência - 12</div>
+                    </div>
+                    <div class="info-item">
+                        <div class="info-label">Recursos</div>
+                        <div class="info-value">Compras no jogo</div>
+                    </div>
+                    <div class="info-item">
+                        <div class="info-label">Jogadores</div>
+                        <div class="info-value">5v5 Online</div>
+                    </div>
+                    <div class="info-item">
+                        <div class="info-label">Modo</div>
+                        <div class="info-value">MOBA Estratégico</div>
+                    </div>
+                </div>
+
+                <div class="rating-info">
+                    <div class="rating-badge">12</div>
+                    <div class="rating-description">
+                        Violência fantástica, Compras no jogo<br>
+                        Mais de 140 campeões para coletar
+                    </div>
+                </div>
+
+                <div class="additional-details">
+                    <div class="details-title">Sobre o Jogo</div>
+                    <ul class="details-list">
+                        <li>MOBA 5v5 com mais de 140 campeões</li>
+                        <li>Partidas competitivas e casuais</li>
+                        <li>Atualizações mensais de balanceamento</li>
+                        <li>Eventos especiais sazonais</li>
+                        <li>Cenário competitivo profissional</li>
+                    </ul>
+                </div>
+
+                <div id="downloadLol" class="download-progress">
+                    <div class="progress-text">Instalando League of Legends...</div>
+                    <div class="progress-bar">
+                        <div class="progress-fill"></div>
+                    </div>
+                    <div class="progress-text">0%</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Legends of Runeterra -->
+    <div id="modalRuneterra" class="modal-jogo">
+        <div class="modal-conteudo">
+            <div class="modal-header">
+                <div class="modal-header-content">
+                    <div class="modal-logo">R</div>
+                    <div class="modal-title-section">
+                        <h1>Legends of Runeterra</h1>
+                        <div class="developer">RIOT GAMES</div>
+                        <div class="modal-rating">
+                            <div class="stars">★★★★☆</div>
+                            <span>4.1 • 8 mil classificações</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="modal-body">
+                <div class="price-section">
+                    <div class="price">Gratuito</div>
+                    <div class="badge">Card Game Estratégico</div>
+                </div>
+
+                <div class="action-buttons">
+                    <button class="btn-primary" onclick="iniciarDownload('Legends of Runeterra')">Instalar Jogo</button>
+                    <button class="btn-secondary" onclick="fecharModal()">Cancelar</button>
+                </div>
+
+                <div class="game-info-grid">
+                    <div class="info-item">
+                        <div class="info-label">Classificação</div>
+                        <div class="info-value">Livre</div>
+                    </div>
+                    <div class="info-item">
+                        <div class="info-label">Recursos</div>
+                        <div class="info-value">Compras no jogo</div>
+                    </div>
+                    <div class="info-item">
+                        <div class="info-label">Jogadores</div>
+                        <div class="info-value">1v1 Online</div>
+                    </div>
+                    <div class="info-item">
+                        <div class="info-label">Modo</div>
+                        <div class="info-value">Card Game Estratégico</div>
+                    </div>
+                </div>
+
+                <div class="rating-info">
+                    <div class="rating-badge">L</div>
+                    <div class="rating-description">
+                        Conteúdo adequado para todas as idades<br>
+                        Compras no jogo opcionais
+                    </div>
+                </div>
+
+                <div class="additional-details">
+                    <div class="details-title">Sobre o Jogo</div>
+                    <ul class="details-list">
+                        <li>Card game estratégico baseado em Runeterra</li>
+                        <li>Colecione cartas gratuitamente</li>
+                        <li>Modos PvP e PvE</li>
+                        <li>Expansões regulares</li>
+                        <li>Cross-play entre plataformas</li>
+                    </ul>
+                </div>
+
+                <div id="downloadRuneterra" class="download-progress">
+                    <div class="progress-text">Instalando Legends of Runeterra...</div>
+                    <div class="progress-bar">
+                        <div class="progress-fill"></div>
+                    </div>
+                    <div class="progress-text">0%</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function voltarParaHome() {
+            window.location.href = 'index.html';
+        }
+
+        function abrirModalJogo(nomeJogo) {
+            fecharModal(); // Fecha qualquer modal aberto
+            
+            switch(nomeJogo) {
+                case 'VALORANT':
+                    document.getElementById('modalValorant').style.display = 'flex';
+                    break;
+                case 'League of Legends':
+                    document.getElementById('modalLol').style.display = 'flex';
+                    break;
+                case 'Legends of Runeterra':
+                    document.getElementById('modalRuneterra').style.display = 'flex';
+                    break;
+            }
+        }
+
+        function fecharModal() {
+            document.getElementById('modalValorant').style.display = 'none';
+            document.getElementById('modalLol').style.display = 'none';
+            document.getElementById('modalRuneterra').style.display = 'none';
+        }
+
+        function iniciarDownload(nomeJogo) {
+            let progressId, progressText;
+            
+            switch(nomeJogo) {
+                case 'VALORANT':
+                    progressId = 'downloadValorant';
+                    progressText = 'Instalando VALORANT...';
+                    break;
+                case 'League of Legends':
+                    progressId = 'downloadLol';
+                    progressText = 'Instalando League of Legends...';
+                    break;
+                case 'Legends of Runeterra':
+                    progressId = 'downloadRuneterra';
+                    progressText = 'Instalando Legends of Runeterra...';
+                    break;
+            }
+            
+            const downloadProgress = document.getElementById(progressId);
+            const progressFill = downloadProgress.querySelector('.progress-fill');
+            const progressPercentage = downloadProgress.querySelector('.progress-text:last-child');
+            
+            // Mostrar progresso
+            downloadProgress.style.display = 'block';
+            downloadProgress.querySelector('.progress-text:first-child').textContent = progressText;
+            
+            // Simular download
+            let progress = 0;
+            const interval = setInterval(() => {
+                progress += Math.random() * 8;
+                if (progress >= 100) {
+                    progress = 100;
+                    clearInterval(interval);
+                    
+                    // Download completo
+                    setTimeout(() => {
+                        alert(`${nomeJogo} instalado com sucesso! O jogo está pronto para ser jogado.`);
+                        fecharModal();
+                    }, 500);
+                }
+                
+                progressFill.style.width = progress + '%';
+                progressPercentage.textContent = Math.round(progress) + '%';
+            }, 200);
+        }
+
+        // Fechar modal ao clicar fora
+        document.querySelectorAll('.modal-jogo').forEach(modal => {
+            modal.addEventListener('click', function(e) {
+                if (e.target === this) {
+                    fecharModal();
+                }
+            });
+        });
+
+        // Adicionando delays sequenciais para as animações dos cards
+        document.addEventListener('DOMContentLoaded', function() {
+            const cards = document.querySelectorAll('.jogo-card');
+            cards.forEach((card, index) => {
+                card.style.animationDelay = `${index * 0.2}s`;
+            });
+        });
+
+        // Verificar se o usuário está logado
+        function verificarLogin() {
+            const usuarioLogado = localStorage.getItem('usuarioLogado');
+            
+            if (usuarioLogado !== 'true') {
+                window.location.href = 'login.html';
+                return false;
+            }
+            return true;
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            if (!verificarLogin()) {
+                return;
+            }
+        });
+    </script>
+</body>
+</html>

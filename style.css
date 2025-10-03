@@ -1,393 +1,426 @@
-/* ===== VARIÁVEIS E CONFIGURAÇÕES GERAIS ===== */
+/* ===== VARIÁVEIS E RESET ===== */
 :root {
-    --cor-fundo: #0a0a0c;
-    --cor-painel: #0f1113;
-    --cor-atenuação: #9aa2a8;
-    --cor-destaque: #d13a3f;
-    --cor-destaque-secundaria: #2f80ff;
-    --cor-card: #0d0f11;
-    --cor-vidro: rgba(255, 255, 255, 0.02);
-    --raio-borda: 14px;
-    --espacamento: 18px;
-    --sombra: 0 6px 18px rgba(0, 0, 0, 0.6);
-    font-family: 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial;
-  }
+  /* Cores principais do tema dark */
+  --cor-fundo: #0a0a0c;              /* Cor de fundo principal */
+  --cor-painel: #0f1113;             /* Cor dos painéis/sidebar */
+  --cor-atenuação: #9aa2a8;          /* Texto secundário/atenuação */
+  --cor-destaque: #d13a3f;           /* Cor primária (vermelho) */
+  --cor-destaque-secundaria: #2f80ff; /* Cor secundária (azul) */
+  --cor-card: #0d0f11;               /* Cor dos cards */
   
-  * {
-    box-sizing: border-box;
+  /* Propriedades de design */
+  --raio-borda: 14px;                /* Border-radius padrão */
+  --espacamento: 18px;               /* Espaçamento padrão */
+  --sombra: 0 6px 18px rgba(0, 0, 0, 0.6); /* Sombra padrão */
+}
+
+/* Reset básico para remover margens padrão e garantir box-sizing consistente */
+* {
+  box-sizing: border-box;
+  margin: 0;
+}
+
+/* Configurações base do documento */
+html, body {
+  height: 100%;                      /* Garante altura total da viewport */
+  font: 15px/1.3 'Inter', system-ui, sans-serif; /* Fonte padrão */
+  background: var(--cor-fundo);      /* Aplica cor de fundo */
+  color: #e6eef3;                    /* Cor do texto principal */
+}
+
+/* ===== ANIMAÇÕES GLOBAIS ===== */
+
+/* Animação de rotação (usada no loading) */
+@keyframes girar {
+  to { transform: rotate(360deg); }  /* Rotação completa */
+}
+
+/* Animação de fade-in simples */
+@keyframes aparecer {
+  to { opacity: 1; }                 /* Vai de transparente para opaco */
+}
+
+/* Animação de entrada pela esquerda */
+@keyframes deslizar-entrada {
+  to { 
+    opacity: 1; 
+    transform: translateX(0);        /* Remove deslocamento lateral */
   }
-  
-  html, body {
-    height: 100%;
-    margin: 0;
-    font-size: 15px;
-    line-height: 1.3;
+}
+
+/* Animação de entrada por baixo */
+@keyframes deslizar-cima {
+  to { 
+    opacity: 1; 
+    transform: translateY(0);        /* Remove deslocamento vertical */
   }
-  
-  body {
-    background: var(--cor-fundo);
-    color: #e6eef3;
+}
+
+/* Animação específica para cards */
+@keyframes aparecer-card {
+  to { 
+    opacity: 1; 
+    transform: translateY(0);        /* Cards sobem levemente ao aparecer */
   }
-  
-  /* ===== TELA DE CARREGAMENTO ===== */
-  #tela-carregamento {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: var(--cor-fundo);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    z-index: 9999;
-  }
-  
-  .logo-carregamento {
-    width: 60px;
-    height: 60px;
-    border-radius: 12px;
-    background: linear-gradient(135deg, var(--cor-destaque), var(--cor-destaque-secundaria));
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-weight: 800;
-    color: #fff;
-    font-size: 20px;
-    animation: girar 1.2s linear infinite;
-  }
-  
-  @keyframes girar {
-    from { transform: rotate(0deg); }
-    to { transform: rotate(360deg); }
-  }
-  
-  /* ===== LAYOUT PRINCIPAL E ANIMAÇÕES ===== */
-  .aplicativo {
-    display: grid;
-    grid-template-columns: 260px 1fr;
-    gap: var(--espacamento);
-    min-height: 100vh;
-    padding: 22px;
-    align-items: start;
-    opacity: 0;
-    animation: aparecer 0.8s ease forwards;
-    animation-delay: 0.5s;
-  }
-  
-  @keyframes aparecer {
-    from { opacity: 0; }
-    to { opacity: 1; }
-  }
-  
-  /* ===== BARRA LATERAL ===== */
-  .barra-lateral {
-    background: linear-gradient(180deg, var(--cor-painel), rgba(255, 255, 255, 0.02));
-    border-radius: var(--raio-borda);
-    padding: 18px;
-    box-shadow: var(--sombra);
-    height: calc(100vh - 44px);
-    position: sticky;
-    top: 22px;
-    display: flex;
-    flex-direction: column;
-    gap: 14px;
-    opacity: 0;
-    animation: deslizar-entrada 0.6s ease forwards;
-    animation-delay: 0.2s;
-  }
-  
-  @keyframes deslizar-entrada {
-    from { opacity: 0; transform: translateX(-20px); }
-    to { opacity: 1; transform: translateX(0); }
-  }
-  
-  .logo-aplicativo {
-    display: flex;
-    gap: 12px;
-    align-items: center;
-  }
-  
-  .marca-logo {
-    width: 44px;
-    height: 44px;
-    border-radius: 10px;
-    background: linear-gradient(135deg, var(--cor-destaque), #ff6b6b);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-weight: 700;
-    box-shadow: 0 6px 18px rgba(209, 58, 63, 0.18);
-    transition: transform 0.25s ease;
-  }
-  
-  .marca-logo:hover {
-    transform: rotate(8deg) scale(1.05);
-  }
-  
-  .navegacao-principal {
-    display: flex;
-    flex-direction: column;
-    gap: 6px;
-    margin-top: 8px;
-  }
-  
-  .item-navegacao {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    padding: 10px;
-    border-radius: 10px;
-    color: var(--cor-atenuação);
-    text-decoration: none;
-    cursor: pointer;
-    transition: all 0.18s ease;
-    user-select: none;
-    font-weight: 600;
-    font-size: 14px;
-  }
-  
-  .item-navegacao:hover {
-    background: rgba(255, 255, 255, 0.02);
-    color: var(--cor-destaque);
-    transform: translateX(4px);
-  }
-  
-  .item-navegacao.ativo {
-    background: linear-gradient(90deg, rgba(209, 58, 63, 0.08), rgba(47, 128, 255, 0.02));
-    color: var(--cor-destaque);
-    box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.02);
-  }
-  
-  .espacador {
-    flex: 1;
-  }
-  
-  .perfil-usuario {
-    display: flex;
-    gap: 12px;
-    align-items: center;
-    padding-top: 8px;
-    border-top: 1px solid rgba(255, 255, 255, 0.02);
-  }
-  
-  .avatar-usuario {
-    width: 42px;
-    height: 42px;
-    border-radius: 8px;
-    background: linear-gradient(180deg, #1b1d20, #0f1113);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-weight: 700;
-    transition: transform 0.25s ease;
-  }
-  
-  .avatar-usuario:hover {
-    transform: scale(1.08);
-  }
-  
-  .nome-usuario {
-    font-weight: 700;
-  }
-  
-  .status-usuario {
-    font-size: 13px;
-    color: var(--cor-atenuação);
-  }
-  
-  /* ===== CONTEÚDO PRINCIPAL ===== */
-  .conteudo-principal {
-    display: flex;
-    flex-direction: column;
-    gap: 18px;
-    opacity: 0;
-    animation: deslizar-cima 0.6s ease forwards;
-    animation-delay: 0.3s;
-  }
-  
-  @keyframes deslizar-cima {
-    from { opacity: 0; transform: translateY(20px); }
-    to { opacity: 1; transform: translateY(0); }
-  }
-  
-  .barra-superior {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    gap: 12px;
-    padding: 12px 16px;
-    border-radius: 12px;
-    background: linear-gradient(180deg, rgba(255, 255, 255, 0.01), transparent);
-    box-shadow: var(--sombra);
-    transition: background 0.3s ease;
-  }
-  
-  .barra-superior:hover {
-    background: linear-gradient(180deg, rgba(255, 255, 255, 0.05), transparent);
-  }
-  
-  .campo-busca {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    background: var(--cor-card);
-    padding: 10px;
-    border-radius: 10px;
-    width: 420px;
-    transition: box-shadow 0.3s ease;
-  }
-  
-  .campo-busca:hover {
-    box-shadow: 0 0 0 2px var(--cor-destaque-secundaria);
-  }
-  
-  .campo-busca input {
-    background: transparent;
-    border: 0;
-    color: inherit;
-    outline: none;
-    font-size: 14px;
-  }
-  
-  .icone-busca {
-    opacity: 0.7;
-  }
-  
-  .acoes-superiores {
-    display: flex;
-    gap: 10px;
-    align-items: center;
-  }
-  
-  .notificacoes {
-    font-weight: 700;
-  }
-  
-  .botao-atualizar {
-    padding: 8px 12px;
-    background: var(--cor-destaque);
-    border-radius: 10px;
-    font-weight: 700;
-    cursor: pointer;
-    transition: transform 0.2s ease, background 0.3s ease;
-  }
-  
-  .botao-atualizar:hover {
-    transform: translateY(-2px) scale(1.03);
-    background: #e64b50;
-  }
-  
-  /* ===== DESTAQUE PRINCIPAL ===== */
-  .destaque-principal {
-    display: flex;
-    gap: 18px;
-    align-items: center;
-    padding: 20px;
-    border-radius: 12px;
-    background: linear-gradient(90deg, rgba(47, 128, 255, 0.03), rgba(209, 58, 63, 0.02));
-    box-shadow: var(--sombra);
-    transition: transform 0.3s ease;
-  }
-  
-  .destaque-principal:hover {
-    transform: translateY(-4px);
-  }
-  
-  .texto-destaque {
-    flex: 1;
-  }
-  
-  .texto-destaque h2 {
-    margin: 0 0 8px 0;
-  }
-  
-  .texto-destaque p {
-    margin: 0;
-    color: var(--cor-atenuação);
-  }
-  
-  .imagem-destaque {
-    width: 220px;
-    height: 110px;
-    border-radius: 12px;
-    background: linear-gradient(135deg, var(--cor-destaque), var(--cor-destaque-secundaria));
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-weight: 800;
-  }
-  
-  /* ===== CARDS DE JOGOS ===== */
-  .grade-cards {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
-    gap: 16px;
-  }
-  
-  .card-jogo {
-    background: linear-gradient(180deg, rgba(255, 255, 255, 0.01), transparent);
-    border-radius: 12px;
-    padding: 12px;
-    overflow: hidden;
-    position: relative;
-    border: 1px solid rgba(255, 255, 255, 0.02);
-    transition: transform 0.18s ease, box-shadow 0.18s ease;
-    opacity: 0;
-    animation: aparecer-card 0.6s ease forwards;
-  }
-  
-  @keyframes aparecer-card {
-    from { opacity: 0; transform: translateY(12px); }
-    to { opacity: 1; transform: translateY(0); }
-  }
-  
-  .card-jogo:nth-child(1) { animation-delay: 0.4s; }
-  .card-jogo:nth-child(2) { animation-delay: 0.55s; }
-  .card-jogo:nth-child(3) { animation-delay: 0.7s; }
-  .card-jogo:nth-child(4) { animation-delay: 0.85s; }
-  .card-jogo:nth-child(5) { animation-delay: 1s; }
-  
-  .card-jogo:hover {
-    transform: translateY(-6px) scale(1.02);
-    box-shadow: 0 18px 40px rgba(0, 0, 0, 0.6);
-  }
-  
-  .midia-card {
-    height: 110px;
-    border-radius: 8px;
-    background: linear-gradient(135deg, rgba(255, 255, 255, 0.02), rgba(255, 255, 255, 0.01));
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-weight: 700;
-    transition: background 0.3s ease;
-  }
-  
-  .card-jogo:hover .midia-card {
-    background: linear-gradient(135deg, var(--cor-destaque-secundaria), var(--cor-destaque));
-  }
-  
-  .card-jogo h3 {
-    margin: 10px 0 6px 0;
-    font-size: 15px;
-  }
-  
-  .card-jogo p {
-    margin: 0;
-    color: var(--cor-atenuação);
-    font-size: 13px;
-  }
-  
-  .etiqueta-card {
-    position: absolute;
-    right: 12px;
-    top: 12px;
-    background: rgba(0, 0, 0, 0.36);
-    padding: 6px 9px;
-    border-radius: 999px;
-    font-weight: 700;
-    font-size: 12px;
-    opacity: 0;
-    transition: opacity 0
-  }
+}
+
+/* ===== TELA DE CARREGAMENTO ===== */
+#tela-carregamento {
+  position: fixed;                   /* Fixa na tela inteira */
+  inset: 0;                         /* Atalho para top, right, bottom, left: 0 */
+  background: var(--cor-fundo);      /* Fundo escuro */
+  display: flex;
+  align-items: center;               /* Centraliza verticalmente */
+  justify-content: center;           /* Centraliza horizontalmente */
+  z-index: 9999;                     /* Garante que fique acima de tudo */
+}
+
+/* Logo animado do loading */
+.logo-carregamento {
+  width: 60px;
+  height: 60px;
+  border-radius: 12px;
+  background: linear-gradient(135deg, var(--cor-destaque), var(--cor-destaque-secundaria));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font: 800 20px/1 sans-serif;      /* Fonte em shorthand: weight size/line-height family */
+  color: #fff;
+  animation: girar 1.2s linear infinite; /* Roda continuamente */
+}
+
+/* ===== LAYOUT PRINCIPAL ===== */
+.aplicativo {
+  display: grid;                     /* Layout em grid de 2 colunas */
+  grid-template-columns: 260px 1fr; /* Sidebar fixa + conteúdo flexível */
+  gap: var(--espacamento);          /* Espaço entre colunas */
+  min-height: 100vh;                /* Altura mínima da viewport */
+  padding: 22px;
+  align-items: start;               /* Alinha itens no topo */
+  opacity: 0;                       /* Inicia invisível para animação */
+  animation: aparecer 0.8s ease 0.5s forwards; /* Animação de entrada com delay */
+}
+
+/* ===== BARRA LATERAL ===== */
+.barra-lateral {
+  background: linear-gradient(180deg, var(--cor-painel), rgba(255, 255, 255, 0.02));
+  border-radius: var(--raio-borda);
+  padding: 18px;
+  box-shadow: var(--sombra);
+  height: calc(100vh - 44px);       /* Altura calculada baseada no padding do app */
+  position: sticky;                 /* Fica fixa ao rolar */
+  top: 22px;                        /* Posição do sticky */
+  display: flex;
+  flex-direction: column;           /* Itens em coluna */
+  gap: 14px;                        /* Espaço entre itens */
+  opacity: 0;
+  animation: deslizar-entrada 0.6s ease 0.2s forwards; /* Entrada pela esquerda */
+}
+
+/* Container do logo e nome do app */
+.logo-aplicativo {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+}
+
+/* Logo circular com gradiente - AGORA COM SUPORTE PARA IMAGEM */
+.marca-logo {
+  width: 44px;
+  height: 44px;
+  border-radius: 10px;
+  background: linear-gradient(135deg, var(--cor-destaque), #ff6b6b);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  box-shadow: 0 6px 18px rgba(209, 58, 63, 0.18);
+  transition: transform 0.25s ease;
+  overflow: hidden; /* Importante: esconde partes da imagem que ultrapassem */
+}
+
+/* Estilo para a imagem dentro da logo */
+.marca-logo img {
+  width: 100%;          /* Ocupa 100% da largura do container */
+  height: 100%;         /* Ocupa 100% da altura do container */
+  object-fit: cover;    /* Redimensiona a imagem para cobrir todo o espaço */
+  border-radius: 10px;  /* Mantém o mesmo border-radius do container */
+}
+
+.marca-logo:hover {
+  transform: rotate(8deg) scale(1.05); /* Efeito de levantar e girar */
+}
+
+/* Navegação principal - menu lateral */
+.navegacao-principal {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-top: 8px;
+}
+
+/* Itens do menu de navegação */
+.item-navegacao {
+  padding: 10px;
+  border-radius: 10px;
+  color: var(--cor-atenuação);      /* Cor secundária */
+  text-decoration: none;
+  cursor: pointer;
+  transition: all 0.18s ease;       /* Transição para todas as propriedades */
+  font: 600 14px/1 sans-serif;
+}
+
+.item-navegacao:hover {
+  background: rgba(255, 255, 255, 0.02);
+  color: var(--cor-destaque);       /* Muda para cor primária no hover */
+  transform: translateX(4px);       /* Desloca levemente para direita */
+}
+
+.item-navegacao.ativo {
+  background: linear-gradient(90deg, rgba(209, 58, 63, 0.08), rgba(47, 128, 255, 0.02));
+  color: var(--cor-destaque);
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.02); /* Borda interna sutil */
+}
+
+/* Espaçador flexível para empurrar o perfil para baixo */
+.espacador {
+  flex: 1;                          /* Ocupa todo espaço disponível */
+}
+
+/* Área do perfil do usuário */
+.perfil-usuario {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  padding-top: 8px;
+  border-top: 1px solid rgba(255, 255, 255, 0.02); /* Linha separadora sutil */
+}
+
+/* Avatar do usuário */
+.avatar-usuario {
+  width: 42px;
+  height: 42px;
+  border-radius: 8px;
+  background: linear-gradient(180deg, #1b1d20, #0f1113);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  transition: transform 0.25s ease;
+}
+
+.avatar-usuario:hover {
+  transform: scale(1.08);           /* Efeito de zoom suave */
+}
+
+.nome-usuario {
+  font-weight: 700;
+}
+
+.status-usuario {
+  font-size: 13px;
+  color: var(--cor-atenuação);      /* Texto secundário */
+}
+
+/* ===== CONTEÚDO PRINCIPAL ===== */
+.conteudo-principal {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  opacity: 0;
+  animation: deslizar-cima 0.6s ease 0.3s forwards; /* Entrada por baixo */
+}
+
+/* ===== BARRA SUPERIOR ===== */
+.barra-superior {
+  display: flex;
+  justify-content: space-between;   /* Busca à esquerda, ações à direita */
+  align-items: center;
+  gap: 12px;
+  padding: 12px 16px;
+  border-radius: 12px;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.01), transparent);
+  box-shadow: var(--sombra);
+  transition: background 0.3s ease;
+}
+
+.barra-superior:hover {
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.05), transparent);
+}
+
+/* Campo de busca com ícone */
+.campo-busca {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: var(--cor-card);
+  padding: 10px;
+  border-radius: 10px;
+  width: 420px;
+  transition: box-shadow 0.3s ease;
+}
+
+.campo-busca:hover {
+  box-shadow: 0 0 0 2px var(--cor-destaque-secundaria); /* Borda azul no hover */
+}
+
+.campo-busca input {
+  background: transparent;
+  border: 0;
+  color: inherit;                   /* Herda cor do texto */
+  outline: none;                    /* Remove outline padrão */
+  font-size: 14px;
+  flex: 1;                          /* Ocupa espaço disponível */
+}
+
+.icone-busca {
+  opacity: 0.7;                     /* Ícone levemente transparente */
+}
+
+/* Container para notificações e botão */
+.acoes-superiores {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
+.notificacoes {
+  font-weight: 700;
+}
+
+/* Botão de atualizar com efeito hover */
+.botao-atualizar {
+  padding: 8px 12px;
+  background: var(--cor-destaque);
+  border-radius: 10px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: transform 0.2s ease, background 0.3s ease;
+}
+
+.botao-atualizar:hover {
+  transform: translateY(-2px) scale(1.03); /* Efeito de levantar */
+  background: #e64b50;              /* Cor mais clara no hover */
+}
+
+/* ===== DESTAQUE PRINCIPAL ===== */
+.destaque-principal {
+  display: flex;
+  gap: 18px;
+  align-items: center;
+  padding: 20px;
+  border-radius: 12px;
+  background: linear-gradient(90deg, rgba(47, 128, 255, 0.03), rgba(209, 58, 63, 0.02));
+  box-shadow: var(--sombra);
+  transition: transform 0.3s ease;
+}
+
+.destaque-principal:hover {
+  transform: translateY(-4px);      /* Efeito de levantar ao passar mouse */
+}
+
+.texto-destaque {
+  flex: 1;                          /* Ocupa espaço disponível */
+}
+
+.texto-destaque h2 {
+  margin: 0 0 8px 0;
+}
+
+.texto-destaque p {
+  margin: 0;
+  color: var(--cor-atenuação);
+}
+
+/* Imagem placeholder do destaque */
+.imagem-destaque {
+  width: 220px;
+  height: 110px;
+  border-radius: 12px;
+  background: linear-gradient(135deg, var(--cor-destaque), var(--cor-destaque-secundaria));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 800;
+}
+
+/* ===== CARDS DE JOGOS ===== */
+.grade-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); /* Grid responsivo */
+  gap: 16px;
+}
+
+/* Card individual do jogo */
+.card-jogo {
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.01), transparent);
+  border-radius: 12px;
+  padding: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.02);
+  transition: transform 0.18s ease, box-shadow 0.18s ease;
+  opacity: 0;
+  animation: aparecer-card 0.6s ease forwards;
+}
+
+/* Delays sequenciais para animação em cascata */
+.card-jogo:nth-child(1) { animation-delay: 0.4s; }
+.card-jogo:nth-child(2) { animation-delay: 0.55s; }
+.card-jogo:nth-child(3) { animation-delay: 0.7s; }
+.card-jogo:nth-child(4) { animation-delay: 0.85s; }
+.card-jogo:nth-child(5) { animation-delay: 1s; }
+
+.card-jogo:hover {
+  transform: translateY(-6px) scale(1.02); /* Efeito de levantar e zoom */
+  box-shadow: 0 18px 40px rgba(0, 0, 0, 0.6); /* Sombra mais pronunciada */
+}
+
+.midia-card img {
+  width: 100%; 
+  height: 100%; 
+  object-fit: cover; 
+  border-radius: 8px;
+}
+/* Área de mídia do card (imagem do jogo) */
+.midia-card {
+
+  height: 110px;
+  border-radius: 8px;
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.02), rgba(255, 255, 255, 0.01));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  transition: background 0.3s ease;
+}
+
+.card-jogo:hover .midia-card {
+  background: linear-gradient(135deg, var(--cor-destaque-secundaria), var(--cor-destaque));
+}
+
+.card-jogo h3 {
+  margin: 10px 0 6px 0;
+  font-size: 15px;
+}
+
+.card-jogo p {
+  margin: 0;
+  color: var(--cor-atenuação);
+  font-size: 13px;
+}
+
+/* Etiqueta "INSTALAR" nos cards */
+.etiqueta-card {
+  position: absolute;
+  right: 12px;
+  top: 12px;
+  background: rgba(0, 0, 0, 0.36);  /* Fundo semi-transparente */
+  padding: 6px 9px;
+  border-radius: 999px;             /* Bordas completamente arredondadas */
+  font: 700 12px/1 sans-serif;
+  opacity: 0;                        /* Invisível por padrão */
+  transition: opacity 0.3s ease;
+}
+
+.card-jogo:hover .etiqueta-card {
+  opacity: 1;                        /* Aparece apenas no hover */
+}

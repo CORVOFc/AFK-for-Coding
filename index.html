@@ -17,7 +17,7 @@
     <!-- Barra Lateral -->
     <aside class="barra-lateral">
       <div class="logo-aplicativo">
-        <div class="marca-logo">RG</div>
+        <div class="marca-logo"><img src="logoVerdadeira.png" alt=""></div>
         <div>
           <h1>Launcher</h1>
           <p>Beta — cliente</p>
@@ -25,12 +25,12 @@
       </div>
 
       <nav class="navegacao-principal">
-        <div class="item-navegacao ativo">Início</div>
-        <div class="item-navegacao">Jogos</div>
-        <div class="item-navegacao">Loja</div>
-        <div class="item-navegacao">Amigos</div>
-        <div class="item-navegacao">Configurações</div>
-      </nav>
+        <a href="index.html"><div class="item-navegacao ativo">Início</div></a>
+        <a href="jogos.html"><div class="item-navegacao">Jogos</div></a>
+        <a href="loja.html"><div class="item-navegacao">Loja</div></a>
+        <a href="amigos.html"><div class="item-navegacao">Amigos</div></a>
+        <a href="config.html"><div class="item-navegacao">Configurações</div></a>
+          </nav>
 
       <div class="espacador"></div>
 
@@ -64,43 +64,30 @@
           <h2>Bem-vindo ao seu Launcher</h2>
           <p>Layout inspirado no novo Riot Client — dark, limpo e focado em jogos.</p>
         </div>
-        <div class="imagem-destaque">Destaque</div>
+       
       </section>
 
       <section class="grade-cards">
         <article class="card-jogo">
           <div class="etiqueta-card">INSTALAR</div>
-          <div class="midia-card">VALORANT</div>
+          <div class="midia-card"><img src="logoVerdadeira.png" alt=""></div>
           <h3>Valorant</h3>
           <p>FPS tático da Riot — 16.8 GB</p>
         </article>
 
         <article class="card-jogo">
-          <div class="midia-card">LEAGUE</div>
+          <div class="midia-card"><img src="lolzinho.jpg" alt=""></div>
           <h3>League of Legends</h3>
           <p>MOBA clássico — 21.2 GB</p>
         </article>
 
         <article class="card-jogo">
-          <div class="midia-card">TFT</div>
-          <h3>Teamfight Tactics</h3>
-          <p>Auto battler — Mobile & PC</p>
+          <div class="midia-card"><img src="Legends of Runeterra.webp" alt=""></div>
+          <h3>Legends of Runeterra</h3>
+          <p> PC</p>
         </article>
 
-        <article class="card-jogo">
-          <div class="midia-card">PROJECT</div>
-          <h3>Project — Demo</h3>
-          <p>Espaço para novos títulos</p>
-        </article>
-
-        <article class="card-jogo">
-          <div class="midia-card">STORE</div>
-          <h3>Loja</h3>
-          <p>Ofertas e passes</p>
-        </article>
-      </section>
-    </main>
-  </div>
+     
 
   <script>
     // Remove tela de carregamento quando a página carregar
@@ -109,6 +96,54 @@
       telaCarregamento.style.opacity = '0';
       setTimeout(() => { telaCarregamento.style.display = 'none' }, 500);
     });
-  </script>
+  
+  // Verificar se o usuário está logado
+  function verificarLogin() {
+    const usuarioLogado = localStorage.getItem('usuarioLogado');
+    
+    if (usuarioLogado !== 'true') {
+      // Redirecionar para a tela de login
+      window.location.href = 'login.html';
+      return false;
+    }
+    
+    // Atualizar nome do usuário se estiver disponível
+    const nomeUsuario = localStorage.getItem('nomeUsuario');
+    if (nomeUsuario) {
+      const elementoNome = document.querySelector('.nome-usuario');
+      if (elementoNome) {
+        elementoNome.textContent = nomeUsuario;
+      }
+    }
+    
+    return true;
+  }
+
+  // Verificar login quando a página carregar
+  document.addEventListener('DOMContentLoaded', function() {
+    if (!verificarLogin()) {
+      return;
+    }
+    
+    
+  });
+
+  // Adicionar função de logout (opcional)
+  function fazerLogout() {
+    localStorage.removeItem('usuarioLogado');
+    localStorage.removeItem('nomeUsuario');
+    window.location.href = 'login.html';
+  }
+
+  // Opcional: Adicionar botão de logout no perfil
+  document.addEventListener('DOMContentLoaded', function() {
+    const perfilUsuario = document.querySelector('.perfil-usuario');
+    if (perfilUsuario) {
+      perfilUsuario.style.cursor = 'pointer';
+      perfilUsuario.title = 'Clique para sair';
+      perfilUsuario.addEventListener('click', fazerLogout);
+    }
+  });
+</script>
 </body>
 </html>

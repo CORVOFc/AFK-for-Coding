@@ -1,0 +1,1062 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Loja - Launcher</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <style>
+        /* ===== VARIÁVEIS E RESET ===== */
+        :root {
+            --cor-fundo: #0a0a0c;
+            --cor-painel: #0f1113;
+            --cor-atenuação: #9aa2a8;
+            --cor-destaque: #d13a3f;
+            --cor-destaque-secundaria: #2f80ff;
+            --cor-card: #0d0f11;
+            --cor-sucesso: #00ff88;
+            --cor-preco: #00ff88;
+            --cor-desconto: #ff4655;
+            --cor-aviso: #ffa726;
+            --cor-info: #29b6f6;
+            --raio-borda: 14px;
+            --espacamento: 18px;
+            --sombra: 0 6px 18px rgba(0, 0, 0, 0.6);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+        }
+
+        html, body {
+            height: 100%;
+            font: 15px/1.3 'Inter', system-ui, sans-serif;
+            background: var(--cor-fundo);
+            color: #e6eef3;
+        }
+
+        /* ===== LAYOUT PRINCIPAL ===== */
+        .aplicativo {
+            display: grid;
+            grid-template-columns: 260px 1fr;
+            gap: var(--espacamento);
+            min-height: 100vh;
+            padding: 22px;
+            align-items: start;
+        }
+
+        /* ===== BARRA LATERAL ===== */
+        .barra-lateral {
+            background: linear-gradient(180deg, var(--cor-painel), rgba(255, 255, 255, 0.02));
+            border-radius: var(--raio-borda);
+            padding: 18px;
+            box-shadow: var(--sombra);
+            height: calc(100vh - 44px);
+            position: sticky;
+            top: 22px;
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+        }
+
+        .logo-aplicativo {
+            display: flex;
+            gap: 12px;
+            align-items: center;
+        }
+
+        .marca-logo {
+            width: 44px;
+            height: 44px;
+            border-radius: 10px;
+            background: linear-gradient(135deg, var(--cor-destaque), #ff6b6b);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            box-shadow: 0 6px 18px rgba(209, 58, 63, 0.18);
+            overflow: hidden;
+        }
+
+        .marca-logo img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 10px;
+        }
+
+        .navegacao-principal {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+            margin-top: 8px;
+        }
+
+        .item-navegacao {
+            padding: 10px;
+            border-radius: 10px;
+            color: var(--cor-atenuação);
+            text-decoration: none;
+            cursor: pointer;
+            transition: all 0.18s ease;
+            font: 600 14px/1 sans-serif;
+        }
+
+        .item-navegacao:hover {
+            background: rgba(255, 255, 255, 0.02);
+            color: var(--cor-destaque);
+            transform: translateX(4px);
+        }
+
+        .item-navegacao.ativo {
+            background: linear-gradient(90deg, rgba(209, 58, 63, 0.08), rgba(47, 128, 255, 0.02));
+            color: var(--cor-destaque);
+            box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.02);
+        }
+
+        .espacador {
+            flex: 1;
+        }
+
+        .perfil-usuario {
+            display: flex;
+            gap: 12px;
+            align-items: center;
+            padding-top: 8px;
+            border-top: 1px solid rgba(255, 255, 255, 0.02);
+        }
+
+        .avatar-usuario {
+            width: 42px;
+            height: 42px;
+            border-radius: 8px;
+            background: linear-gradient(180deg, #1b1d20, #0f1113);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+        }
+
+        /* ===== CONTEÚDO PRINCIPAL ===== */
+        .conteudo-principal {
+            display: flex;
+            flex-direction: column;
+            gap: 18px;
+        }
+
+        /* ===== HEADER DA LOJA ===== */
+        .header-loja {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px;
+            background: linear-gradient(180deg, rgba(255, 255, 255, 0.01), transparent);
+            border-radius: 12px;
+            box-shadow: var(--sombra);
+        }
+
+        .titulo-loja h1 {
+            font-size: 28px;
+            margin-bottom: 5px;
+        }
+
+        .titulo-loja p {
+            color: var(--cor-atenuação);
+            font-size: 14px;
+        }
+
+        .saldo-usuario {
+            background: var(--cor-card);
+            padding: 12px 20px;
+            border-radius: 10px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .saldo-usuario span {
+            color: var(--cor-sucesso);
+            font-weight: 700;
+        }
+
+        /* ===== FILTROS E BUSCA ===== */
+        .filtros-loja {
+            display: flex;
+            gap: 15px;
+            padding: 20px;
+            background: var(--cor-painel);
+            border-radius: 12px;
+            box-shadow: var(--sombra);
+            flex-wrap: wrap;
+        }
+
+        .campo-busca {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            background: var(--cor-card);
+            padding: 10px 15px;
+            border-radius: 10px;
+            flex: 1;
+            min-width: 300px;
+        }
+
+        .campo-busca input {
+            background: transparent;
+            border: 0;
+            color: inherit;
+            outline: none;
+            font-size: 14px;
+            flex: 1;
+        }
+
+        .filtro-categoria {
+            background: var(--cor-card);
+            padding: 10px 15px;
+            border-radius: 10px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: inherit;
+            cursor: pointer;
+        }
+
+        /* ===== DESTAQUES ===== */
+        .destaques-loja {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 18px;
+        }
+
+        .destaque-principal {
+            background: linear-gradient(135deg, rgba(47, 128, 255, 0.1), rgba(209, 58, 63, 0.05));
+            border-radius: 12px;
+            padding: 30px;
+            position: relative;
+            overflow: hidden;
+            min-height: 300px;
+        }
+
+        .destaque-principal::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 50%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.02));
+        }
+
+        .info-destaque h2 {
+            font-size: 24px;
+            margin-bottom: 10px;
+        }
+
+        .info-destaque p {
+            color: var(--cor-atenuação);
+            margin-bottom: 20px;
+            max-width: 400px;
+        }
+
+        .preco-destaque {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .preco-original {
+            color: var(--cor-atenuação);
+            text-decoration: line-through;
+            font-size: 14px;
+        }
+
+        .preco-promocional {
+            color: var(--cor-preco);
+            font-size: 24px;
+            font-weight: 700;
+        }
+
+        .desconto {
+            background: var(--cor-desconto);
+            color: white;
+            padding: 4px 8px;
+            border-radius: 6px;
+            font-size: 12px;
+            font-weight: 700;
+        }
+
+        .botao-comprar {
+            background: var(--cor-destaque);
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .botao-comprar:hover {
+            background: #e64b50;
+            transform: translateY(-2px);
+        }
+
+        .destaque-secundario {
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.02), transparent);
+            border-radius: 12px;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        /* ===== CATEGORIAS ===== */
+        .categorias {
+            display: flex;
+            gap: 10px;
+            overflow-x: auto;
+            padding: 10px 0;
+            margin: 10px 0;
+        }
+
+        .categoria {
+            background: var(--cor-card);
+            padding: 10px 20px;
+            border-radius: 20px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            white-space: nowrap;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .categoria.ativa {
+            background: var(--cor-destaque);
+            color: white;
+        }
+
+        .categoria:hover {
+            transform: translateY(-2px);
+        }
+
+        /* ===== GRADE DE JOGOS ===== */
+        .grade-jogos {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 20px;
+            padding: 20px 0;
+        }
+
+        .card-jogo {
+            background: linear-gradient(180deg, rgba(255, 255, 255, 0.01), transparent);
+            border-radius: 12px;
+            padding: 15px;
+            border: 1px solid rgba(255, 255, 255, 0.02);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .card-jogo:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.8);
+            border-color: rgba(255, 255, 255, 0.1);
+        }
+
+        .badge-promocao {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background: var(--cor-desconto);
+            color: white;
+            padding: 4px 8px;
+            border-radius: 6px;
+            font-size: 12px;
+            font-weight: 700;
+            z-index: 2;
+        }
+
+        .badge-lancamento {
+            position: absolute;
+            top: 15px;
+            left: 15px;
+            background: var(--cor-info);
+            color: white;
+            padding: 4px 8px;
+            border-radius: 6px;
+            font-size: 12px;
+            font-weight: 700;
+            z-index: 2;
+        }
+
+        .badge-gratis {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background: var(--cor-sucesso);
+            color: var(--cor-fundo);
+            padding: 4px 8px;
+            border-radius: 6px;
+            font-size: 12px;
+            font-weight: 700;
+            z-index: 2;
+        }
+
+        .midia-card {
+            height: 160px;
+            border-radius: 8px;
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.02), rgba(255, 255, 255, 0.01));
+            margin-bottom: 15px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .midia-card img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.3s ease;
+        }
+
+        .card-jogo:hover .midia-card img {
+            transform: scale(1.05);
+        }
+
+        .info-card h3 {
+            margin: 0 0 8px 0;
+            font-size: 16px;
+        }
+
+        .info-card p {
+            color: var(--cor-atenuação);
+            font-size: 13px;
+            margin: 0 0 12px 0;
+            min-height: 40px;
+        }
+
+        .preco-card {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 15px;
+        }
+
+        .preco-atual {
+            color: var(--cor-preco);
+            font-weight: 700;
+            font-size: 18px;
+        }
+
+        .preco-anterior {
+            color: var(--cor-atenuação);
+            text-decoration: line-through;
+            font-size: 12px;
+        }
+
+        .botoes-card {
+            display: flex;
+            gap: 8px;
+        }
+
+        .btn-comprar {
+            background: var(--cor-destaque);
+            color: white;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 6px;
+            font-size: 12px;
+            font-weight: 600;
+            cursor: pointer;
+            flex: 1;
+            transition: all 0.3s ease;
+        }
+
+        .btn-comprar:hover {
+            background: #e64b50;
+        }
+
+        .btn-detalhes {
+            background: transparent;
+            color: var(--cor-atenuação);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            padding: 8px 15px;
+            border-radius: 6px;
+            font-size: 12px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .btn-detalhes:hover {
+            border-color: var(--cor-destaque-secundaria);
+            color: var(--cor-destaque-secundaria);
+        }
+
+        /* ===== CARRINHO FLUTUANTE ===== */
+        .carrinho-flutuante {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background: var(--cor-destaque);
+            color: white;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            box-shadow: 0 4px 20px rgba(209, 58, 63, 0.4);
+            transition: all 0.3s ease;
+            z-index: 1000;
+        }
+
+        .carrinho-flutuante:hover {
+            transform: scale(1.1);
+            box-shadow: 0 6px 25px rgba(209, 58, 63, 0.6);
+        }
+
+        .contador-carrinho {
+            position: absolute;
+            top: -5px;
+            right: -5px;
+            background: var(--cor-sucesso);
+            color: var(--cor-fundo);
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            font-size: 12px;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* ===== MODAL CARRINHO ===== */
+        .modal-carrinho {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            z-index: 2000;
+            justify-content: flex-end;
+        }
+
+        .carrinho-conteudo {
+            background: var(--cor-painel);
+            width: 400px;
+            height: 100%;
+            padding: 20px;
+            overflow-y: auto;
+            transform: translateX(100%);
+            transition: transform 0.3s ease;
+        }
+
+        .modal-carrinho.mostrar .carrinho-conteudo {
+            transform: translateX(0);
+        }
+
+        .carrinho-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .fechar-carrinho {
+            background: none;
+            border: none;
+            color: var(--cor-atenuação);
+            font-size: 24px;
+            cursor: pointer;
+        }
+
+        .itens-carrinho {
+            margin-bottom: 20px;
+        }
+
+        .item-carrinho {
+            display: flex;
+            gap: 15px;
+            padding: 15px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .item-carrinho img {
+            width: 60px;
+            height: 60px;
+            border-radius: 8px;
+            object-fit: cover;
+        }
+
+        .info-item h4 {
+            margin: 0 0 5px 0;
+            font-size: 14px;
+        }
+
+        .preco-item {
+            color: var(--cor-preco);
+            font-weight: 700;
+        }
+
+        .remover-item {
+            background: none;
+            border: none;
+            color: var(--cor-destaque);
+            cursor: pointer;
+            font-size: 12px;
+            margin-top: 5px;
+        }
+
+        .total-carrinho {
+            background: var(--cor-card);
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 15px;
+        }
+
+        .linha-total {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+        }
+
+        .total-geral {
+            font-weight: 700;
+            font-size: 18px;
+            color: var(--cor-preco);
+        }
+
+        .btn-finalizar {
+            background: var(--cor-sucesso);
+            color: var(--cor-fundo);
+            border: none;
+            padding: 15px;
+            border-radius: 8px;
+            font-weight: 700;
+            cursor: pointer;
+            width: 100%;
+            transition: all 0.3s ease;
+        }
+
+        .btn-finalizar:hover {
+            opacity: 0.9;
+            transform: translateY(-2px);
+        }
+
+        .carrinho-vazio {
+            text-align: center;
+            color: var(--cor-atenuação);
+            padding: 40px 0;
+        }
+
+        /* ===== MODAL PAGAMENTO ===== */
+        .modal-pagamento {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.9);
+            z-index: 3000;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .pagamento-conteudo {
+            background: var(--cor-painel);
+            width: 90%;
+            max-width: 500px;
+            border-radius: 12px;
+            padding: 30px;
+            box-shadow: var(--sombra);
+        }
+
+        .metodos-pagamento {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 10px;
+            margin: 20px 0;
+        }
+
+        .metodo-pagamento {
+            background: var(--cor-card);
+            border: 2px solid transparent;
+            border-radius: 8px;
+            padding: 15px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-align: center;
+        }
+
+        .metodo-pagamento.selecionado {
+            border-color: var(--cor-destaque);
+            background: rgba(209, 58, 63, 0.1);
+        }
+
+        .metodo-pagamento:hover {
+            transform: translateY(-2px);
+        }
+
+        .icone-metodo {
+            font-size: 24px;
+            margin-bottom: 8px;
+        }
+
+        .form-pagamento {
+            margin-top: 20px;
+        }
+
+        .grupo-form {
+            margin-bottom: 15px;
+        }
+
+        .grupo-form label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: 600;
+            color: var(--cor-atenuação);
+        }
+
+        .grupo-form input {
+            width: 100%;
+            padding: 12px;
+            background: var(--cor-card);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 6px;
+            color: white;
+            font-size: 14px;
+        }
+
+        .linha-form {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+        }
+
+        .botoes-pagamento {
+            display: flex;
+            gap: 10px;
+            margin-top: 25px;
+        }
+
+        .btn-confirmar {
+            background: var(--cor-sucesso);
+            color: var(--cor-fundo);
+            border: none;
+            padding: 12px 20px;
+            border-radius: 6px;
+            font-weight: 700;
+            cursor: pointer;
+            flex: 1;
+        }
+
+        .btn-cancelar {
+            background: var(--cor-card);
+            color: var(--cor-atenuação);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            padding: 12px 20px;
+            border-radius: 6px;
+            cursor: pointer;
+        }
+
+        /* ===== NOTIFICAÇÕES ===== */
+        .notificacao {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: var(--cor-sucesso);
+            color: var(--cor-fundo);
+            padding: 15px 20px;
+            border-radius: 8px;
+            box-shadow: var(--sombra);
+            z-index: 4000;
+            transform: translateX(150%);
+            transition: transform 0.3s ease;
+        }
+
+        .notificacao.mostrar {
+            transform: translateX(0);
+        }
+
+        .notificacao.erro {
+            background: var(--cor-destaque);
+            color: white;
+        }
+
+        /* ===== RESPONSIVIDADE ===== */
+        @media (max-width: 1024px) {
+            .destaques-loja {
+                grid-template-columns: 1fr;
+            }
+            
+            .grade-jogos {
+                grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            }
+        }
+
+        @media (max-width: 768px) {
+            .aplicativo {
+                grid-template-columns: 1fr;
+                padding: 10px;
+            }
+            
+            .barra-lateral {
+                position: relative;
+                height: auto;
+                top: 0;
+            }
+            
+            .filtros-loja {
+                flex-direction: column;
+            }
+            
+            .campo-busca {
+                min-width: auto;
+            }
+            
+            .carrinho-conteudo {
+                width: 100%;
+            }
+            
+            .metodos-pagamento {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="aplicativo">
+        <!-- Barra Lateral -->
+        <aside class="barra-lateral">
+            <div class="logo-aplicativo">
+                <div class="marca-logo"><img src="logoVerdadeira.png" alt=""></div>
+                <div>
+                    <h1>Launcher</h1>
+                    <p>Beta — cliente</p>
+                </div>
+            </div>
+
+            <nav class="navegacao-principal">
+                <a href="index.html"><div class="item-navegacao">Início</div></a>
+                <a href="jogos.html"><div class="item-navegacao">Jogos</div></a>
+                <a href="loja.html"><div class="item-navegacao ativo">Loja</div></a>
+                <a href="amigos.html"><div class="item-navegacao">Amigos</div></a>
+                <a href="config.html"><div class="item-navegacao">Configurações</div></a>
+            </nav>
+
+            <div class="espacador"></div>
+
+            <div class="perfil-usuario">
+                <div class="avatar-usuario">C</div>
+                <div>
+                    <div class="nome-usuario">Corvo</div>
+                    <div class="status-usuario">Online</div>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Conteúdo Principal -->
+        <main class="conteudo-principal">
+            <!-- Header da Loja -->
+            <div class="header-loja">
+                <div class="titulo-loja">
+                    <h1>Loja de Jogos</h1>
+                    <p>Descubra os melhores jogos com descontos incríveis</p>
+                </div>
+                <div class="saldo-usuario">
+                    Saldo: <span>R$ 150,00</span>
+                </div>
+            </div>
+
+            <!-- Filtros -->
+            <div class="filtros-loja">
+                <div class="campo-busca">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" class="icone-busca">
+                        <path d="M21 21l-4.35-4.35" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+                        <circle cx="11" cy="11" r="6" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                    <input placeholder="Buscar jogos..." id="campoBusca">
+                </div>
+                <select class="filtro-categoria" id="filtroCategoria">
+                    <option value="todos">Todas as Categorias</option>
+                    <option value="acao">Ação</option>
+                    <option value="rpg">RPG</option>
+                    <option value="estrategia">Estratégia</option>
+                    <option value="fps">FPS</option>
+                </select>
+                <select class="filtro-categoria" id="filtroPreco">
+                    <option value="todos">Qualquer Preço</option>
+                    <option value="gratis">Gratuitos</option>
+                    <option value="ate50">Até R$ 50</option>
+                    <option value="ate100">Até R$ 100</option>
+                    <option value="acima100">Acima de R$ 100</option>
+                </select>
+            </div>
+
+            <!-- Destaques -->
+            <div class="destaques-loja">
+                <div class="destaque-principal">
+                    <div class="info-destaque">
+                        <h2>Promoção da Semana</h2>
+                        <p>Adquira o pacote completo de VALORANT com 40% de desconto e receba skins exclusivas!</p>
+                        <div class="preco-destaque">
+                            <span class="preco-original">R$ 199,90</span>
+                            <span class="preco-promocional">R$ 119,94</span>
+                            <span class="desconto">-40%</span>
+                        </div>
+                        <button class="botao-comprar" onclick="adicionarAoCarrinho('pacoteValorant')">
+                            Comprar Agora
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="destaque-secundario">
+                    <div>
+                        <h3>Oferta Relâmpago</h3>
+                        <p>League of Legends - Pacote de Campeões</p>
+                        <div class="preco-destaque">
+                            <span class="preco-promocional">R$ 49,90</span>
+                            <span class="desconto">-25%</span>
+                        </div>
+                    </div>
+                    <button class="botao-comprar" onclick="adicionarAoCarrinho('pacoteLol')">
+                        Comprar
+                    </button>
+                </div>
+            </div>
+
+            <!-- Categorias -->
+            <div class="categorias">
+                <div class="categoria ativa" data-categoria="todos">Todos</div>
+                <div class="categoria" data-categoria="promocoes">🔥 Promoções</div>
+                <div class="categoria" data-categoria="lancamentos">🆕 Lançamentos</div>
+                <div class="categoria" data-categoria="gratis">🎁 Gratuitos</div>
+                <div class="categoria" data-categoria="acao">⚔️ Ação</div>
+                <div class="categoria" data-categoria="rpg">🧙‍♂️ RPG</div>
+                <div class="categoria" data-categoria="estrategia">♟️ Estratégia</div>
+                <div class="categoria" data-categoria="fps">🎯 FPS</div>
+                <div class="categoria" data-categoria="aventura">🗺️ Aventura</div>
+            </div>
+
+            <!-- Grade de Jogos -->
+            <div class="grade-jogos" id="gradeJogos">
+                <!-- Os jogos serão carregados via JavaScript -->
+            </div>
+        </main>
+    </div>
+
+    <!-- Carrinho Flutuante -->
+    <div class="carrinho-flutuante" onclick="abrirCarrinho()">
+        🛒
+        <div class="contador-carrinho" id="contadorCarrinho">0</div>
+    </div>
+
+    <!-- Modal Carrinho -->
+    <div class="modal-carrinho" id="modalCarrinho">
+        <div class="carrinho-conteudo">
+            <div class="carrinho-header">
+                <h3>Seu Carrinho</h3>
+                <button class="fechar-carrinho" onclick="fecharCarrinho()">&times;</button>
+            </div>
+            
+            <div class="itens-carrinho" id="itensCarrinho">
+                <!-- Itens do carrinho serão carregados aqui -->
+            </div>
+            
+            <div class="total-carrinho">
+                <div class="linha-total">
+                    <span>Subtotal:</span>
+                    <span id="subtotal">R$ 0,00</span>
+                </div>
+                <div class="linha-total">
+                    <span>Descontos:</span>
+                    <span id="descontos">-R$ 0,00</span>
+                </div>
+                <div class="linha-total total-geral">
+                    <span>Total:</span>
+                    <span id="total">R$ 0,00</span>
+                </div>
+            </div>
+            
+            <button class="btn-finalizar" onclick="iniciarPagamento()">
+                Finalizar Compra
+            </button>
+        </div>
+    </div>
+
+    <!-- Modal Pagamento -->
+    <div class="modal-pagamento" id="modalPagamento">
+        <div class="pagamento-conteudo">
+            <div class="carrinho-header">
+                <h3>Finalizar Pagamento</h3>
+                <button class="fechar-carrinho" onclick="fecharPagamento()">&times;</button>
+            </div>
+
+            <div class="total-carrinho">
+                <div class="linha-total total-geral">
+                    <span>Total a Pagar:</span>
+                    <span id="totalPagamento">R$ 0,00</span>
+                </div>
+            </div>
+
+            <h4 style="margin: 20px 0 10px 0;">Escolha a forma de pagamento:</h4>
+            
+            <div class="metodos-pagamento">
+                <div class="metodo-pagamento" data-metodo="pix" onclick="selecionarMetodo('pix')">
+                    <div class="icone-metodo">📱</div>
+                    <div>PIX</div>
+                </div>
+                <div class="metodo-pagamento" data-metodo="cartao" onclick="selecionarMetodo('cartao')">
+                    <div class="icone-metodo">💳</div>
+                    <div>Cartão</div>
+                </div>
+                <div class="metodo-pagamento" data-metodo="debito" onclick="selecionarMetodo('debito')">
+                    <div class="icone-metodo">💸</div>
+                    <div>Débito</div>
+                </div>
+                <div class="metodo-pagamento" data-metodo="boleto" onclick="selecionarMetodo('boleto')">
+                    <div class="icone-metodo">📄</div>
+                    <div>Boleto</div>
+                </div>
+            </div>
+
+            <!-- Formulário Cartão -->
+            <div class="form-pagamento" id="formCartao" style="display: none;">
+                <div class="grupo-form">
+                    <label>Número do Cartão</label>
+                    <input type="text" placeholder="1234 5678 9012 3456" maxlength="19">
+                </div>
+                <div class="linha-form">
+                    <div class="grupo-form">
+                        <label>Validade</label>
+                        <input type="text" placeholder="MM/AA" maxlength="5">
+                    </div>
+                    <div class="grupo-form">
+                        <label>CVV</label>
+                        <input type="text" placeholder="123" maxlength="3">
+                    </div>
+                </div>
+                <div class="grupo-form">
+                    <label>Nome no Cartão</label>
+                    <input type="text" placeholder="Seu nome completo">
+                </div>
+                <div class="grupo-form">
+                    <label>CPF do Titular</label>
+                    <input type="text" placeholder="000.000.000-00">
+                </div>
+            </div>
+
+            <!-- Formulário PIX -->
+            <div class="form-pagamento" id="formPix" style="display: none;">
+                <div style="text-align: center; padding: 20px; background: var(--cor-card); border-radius: 8px;">
+                    <div style="font-size: 48px; margin-bottom: 10px;">📱</div>
+                    <h4>Pagamento via PIX</h4>
+                    <p style="color: var(--cor-atenuação); margin: 10px 0;">Escaneie o QR Code abaixo</p>
+                    <div style="background: white; width: 200px; height: 200px; margin: 0 auto; border-radius: 8px; display: flex; align-items: center; justify-content: center; color: black;">
+                        [QR CODE]
+                    </div>
+                    <p style="margin: 15px 0; font-family: monospace; background: var(--cor-card); padding: 10px; border-radius: 6px;">
+                        00020126580014br.gov.bcb.pix0136aae
